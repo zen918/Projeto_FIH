@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" fill="none">
+  <title>Embalagem com rastreabilidade por QR Code</title>
+  <defs>
+    <linearGradient id="bg" x1="19" y1="14" x2="577" y2="353" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5E9EB"/>
+      <stop offset="1" stop-color="#E8ECDD"/>
+    </linearGradient>
+    <linearGradient id="bag" x1="194" y1="68" x2="426" y2="301" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF5"/>
+      <stop offset="1" stop-color="#DDE9D9"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="360" rx="24" fill="url(#bg)"/>
+  <circle cx="300" cy="177" r="139" fill="#fff" fill-opacity=".4"/>
+  <path d="M137 302h326" stroke="#BACBB6" stroke-linecap="round" stroke-width="4"/>
+  <path d="M188 114h224l-16 164a21 21 0 0 1-21 19H225a21 21 0 0 1-21-19l-16-164Z" fill="url(#bag)" stroke="#477B59" stroke-linejoin="round" stroke-width="7"/>
+  <path d="M188 126h224" stroke="#477B59" stroke-linecap="round" stroke-width="7"/>
+  <path d="M233 114V88a22 22 0 0 1 22-22h90a22 22 0 0 1 22 22v26" stroke="#477B59" stroke-linecap="round" stroke-width="7"/>
+  <rect x="218" y="146" width="164" height="111" rx="13" fill="#FFF" fill-opacity=".75"/>
+  <path d="M258 228c-26-13-25-41-6-58 5 21 18 28 27 35 11 10 5 27-7 32" fill="#83B58A"/>
+  <path d="M265 236c-7-24-2-41 17-58" stroke="#477B59" stroke-linecap="round" stroke-width="5"/>
+  <path d="M247 202c13 2 20 9 21 20-13 3-21-4-21-20Z" fill="#5E9A72"/>
+  <path d="M267 190c-1-12 6-20 18-22 2 13-4 20-18 22Z" fill="#A3C89F"/>
+  <path d="M306 171h50m-50 17h42m-42 17h46m-46 17h31" stroke="#C1CFC0" stroke-linecap="round" stroke-width="5"/>
+  <rect x="394" y="192" width="102" height="102" rx="13" fill="#183326"/>
+  <path d="M407 205h29v29h-29v-29Zm47 0h29v29h-29v-29Zm-47 47h29v29h-29v-29Zm41-47h6v6h-6v-6Zm-1 13h8v8h-8v-8Zm-15 20h8v8h-8v-8Zm15 7h7v7h-7v-7Zm13 2h10v10h-10v-10Zm-13 15h7v7h-7v-7Zm23 8h6v6h-6v-6Z" fill="#FFF8F1"/>
+  <circle cx="135" cy="99" r="31" fill="#fff" fill-opacity=".75"/>
+  <path d="M120 100c8-13 16-13 24-1m-21 11c10 6 19 3 24-7" stroke="#D94F78" stroke-linecap="round" stroke-width="5"/>
+  <path d="m129 85 5-7 5 7m-7 41 5 7 5-7" stroke="#477B59" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+</svg>

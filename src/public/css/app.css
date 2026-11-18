@@ -2519,6 +2519,61 @@ body.sidebar-collapsed .app-main {
   padding: 1.5rem;
 }
 
+.hero-visual {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 22px;
+  box-shadow: var(--pyt-shadow-lg);
+  margin: 0 0 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-visual img {
+  aspect-ratio: 48 / 29;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.hero-visual-caption {
+  align-items: center;
+  backdrop-filter: blur(12px);
+  background: rgba(20, 35, 28, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  bottom: 1rem;
+  display: flex;
+  gap: 0.7rem;
+  left: 1rem;
+  padding: 0.55rem 0.8rem;
+  position: absolute;
+}
+
+.hero-visual-caption strong,
+.hero-visual-caption small {
+  display: block;
+}
+
+.hero-visual-caption strong {
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.hero-visual-caption small {
+  color: rgba(247, 243, 235, 0.72);
+  font-size: 0.64rem;
+}
+
+.hero-visual-pulse {
+  background: #9bd3aa;
+  border: 3px solid rgba(155, 211, 170, 0.2);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(155, 211, 170, 0.12);
+  flex: 0 0 0.6rem;
+  height: 0.6rem;
+}
+
 .hero-card h2 {
   color: #fff;
 }
@@ -2656,14 +2711,39 @@ body.sidebar-collapsed .app-main {
   transform: translateY(-3px);
 }
 
+.step-image-frame {
+  aspect-ratio: 5 / 3;
+  border: 1px solid var(--pyt-line);
+  border-radius: 13px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.step-image-frame img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+  width: 100%;
+}
+
+.step-card:hover .step-image-frame img {
+  transform: scale(1.035);
+}
+
 .step-number {
-  color: var(--pyt-line-strong);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+  color: var(--pyt-forest);
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.9rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  line-height: 1;
+  padding: 0.45rem 0.6rem;
   position: absolute;
-  right: 1rem;
-  top: 0.7rem;
+  right: 1.75rem;
+  top: 1.75rem;
 }
 
 .step-icon {
@@ -2675,7 +2755,7 @@ body.sidebar-collapsed .app-main {
   font-size: 1.15rem;
   height: 44px;
   justify-content: center;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.7rem;
   width: 44px;
 }
 

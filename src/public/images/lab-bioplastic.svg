@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" fill="none">
+  <title>Formulação de bioplástico em laboratório</title>
+  <defs>
+    <linearGradient id="bg" x1="41" y1="12" x2="563" y2="352" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7F1DE"/>
+      <stop offset="1" stop-color="#E4EDDF"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="219" y1="92" x2="363" y2="289" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#D9E8D8" stop-opacity=".95"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="360" rx="24" fill="url(#bg)"/>
+  <circle cx="104" cy="67" r="50" fill="#fff" fill-opacity=".48"/>
+  <circle cx="500" cy="284" r="88" fill="#fff" fill-opacity=".37"/>
+  <path d="M93 285h414" stroke="#B7C8B2" stroke-linecap="round" stroke-width="4"/>
+  <rect x="85" y="249" width="430" height="27" rx="10" fill="#D7C8A8"/>
+  <path d="M251 57h96v23l-18 21 57 124a22 22 0 0 1-20 32H232a22 22 0 0 1-20-32l57-124-18-21V57Z" fill="url(#glass)" stroke="#477B59" stroke-linejoin="round" stroke-width="7"/>
+  <path d="M237 190h123l27 46a22 22 0 0 1-20 32H232a22 22 0 0 1-20-32l25-46Z" fill="#E985A0" fill-opacity=".78"/>
+  <path d="M252 211c22-13 40 14 64 0 14-8 28-8 42 0" stroke="#FFF8F1" stroke-linecap="round" stroke-width="6"/>
+  <path d="M280 188c-4-23 6-40 29-49 8 23-1 40-29 49Z" fill="#6FA47B"/>
+  <path d="M289 186c-17-17-17-34-2-50 18 14 19 30 2 50Z" fill="#9BC69A"/>
+  <path d="M304 80h-9" stroke="#477B59" stroke-linecap="round" stroke-width="6"/>
+  <path d="M403 121c22-21 54-22 75-2m-71 34c28-13 52-4 61 19" stroke="#8CB58D" stroke-linecap="round" stroke-width="5"/>
+  <circle cx="420" cy="108" r="8" fill="#D94F78"/>
+  <circle cx="479" cy="171" r="7" fill="#D9B562"/>
+  <circle cx="450" cy="96" r="5" fill="#477B59"/>
+  <path d="M142 169c18-22 39-21 49-1-14 17-32 18-49 1Zm-12 41c13-16 29-15 37-1-10 13-23 14-37 1Z" fill="#D94F78"/>
+  <path d="M111 244v-28m0 9-14-14m14 21 15-16" stroke="#477B59" stroke-linecap="round" stroke-width="5"/>
+  <path d="M105 216c-2-11 3-18 14-21 4 11 0 18-14 21Z" fill="#76A882"/>
+  <path d="M111 224c-10-8-11-16-3-25 11 7 12 15 3 25Z" fill="#A2C99F"/>
+</svg>

@@ -62,6 +62,15 @@ async function main() {
     await expectStatus('/recuperar-senha', 200);
     await expectStatus('/assets/css/app.css', 200);
     await expectStatus('/assets/js/app.js', 200);
+    for (const image of [
+      '/assets/images/rose-cycle.svg',
+      '/assets/images/petal-collection.svg',
+      '/assets/images/lab-bioplastic.svg',
+      '/assets/images/traceable-package.svg',
+      '/assets/images/circular-packaging.svg',
+    ]) {
+      await expectStatus(image, 200);
+    }
     await expectStatus('/r/PYTA1B2', 200);
     await expectStatus('/r/PYTA1B2/qr.png', 200);
 

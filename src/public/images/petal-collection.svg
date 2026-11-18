@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" fill="none">
+  <title>Coleta de pétalas de rosas</title>
+  <defs>
+    <linearGradient id="bg" x1="42" y1="18" x2="556" y2="349" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF6F0"/>
+      <stop offset="1" stop-color="#F3DFE4"/>
+    </linearGradient>
+    <linearGradient id="rose" x1="185" y1="87" x2="379" y2="252" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5A5B6"/>
+      <stop offset="1" stop-color="#D94F78"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="360" rx="24" fill="url(#bg)"/>
+  <circle cx="490" cy="77" r="82" fill="#fff" fill-opacity=".5"/>
+  <path d="M101 283c74-48 151-50 229-5 61 35 122 39 185 9" stroke="#DDB8C0" stroke-width="3" stroke-dasharray="5 12"/>
+  <path d="M114 248h369l-31 71H145l-31-71Z" fill="#B66D56"/>
+  <path d="M124 249h347l-21 48H145l-21-48Z" fill="#DB9A76"/>
+  <path d="M115 248h369" stroke="#F0BE98" stroke-linecap="round" stroke-width="12"/>
+  <path d="m167 268 6 21m45-21 5 21m45-21 4 21m45-21 3 21m45-21 2 21m45-21 1 21" stroke="#A65F4D" stroke-linecap="round" stroke-width="5"/>
+  <path d="M291 224c-2-46 16-86 48-120" stroke="#477B59" stroke-linecap="round" stroke-width="8"/>
+  <path d="M313 172c-43-32-74-25-86 3 26 25 56 24 86-3Z" fill="#83B58A"/>
+  <path d="M328 141c17-39 44-53 72-40-7 34-32 52-72 40Z" fill="#5E9A72"/>
+  <path d="M295 122c-25-21-25-43-4-63 25 12 29 34 4 63Z" fill="#F19AAF"/>
+  <path d="M298 121c1-34 20-51 52-48 4 30-14 48-52 48Z" fill="url(#rose)"/>
+  <path d="M300 124c27-28 53-27 72 0-18 25-43 25-72 0Z" fill="#E67F99"/>
+  <path d="M296 127c37-8 57 8 55 42-31 11-51-3-55-42Z" fill="#D94F78"/>
+  <path d="M293 126c15 35 5 57-31 66-19-25-9-47 31-66Z" fill="#F5A6B6"/>
+  <path d="M291 121c-31 22-57 16-70-17 23-22 47-15 70 17Z" fill="#EC8BA3"/>
+  <circle cx="297" cy="123" r="13" fill="#F5D792"/>
+  <path d="M187 201c14-20 31-18 41-2-10 18-26 20-41 2Zm183-22c15-21 34-18 43-1-12 18-28 20-43 1Zm34 27c12-17 27-15 34-1-10 15-22 16-34 1Z" fill="#D94F78" fill-opacity=".83"/>
+  <circle cx="480" cy="103" r="33" fill="#fff" fill-opacity=".75"/>
+  <path d="m470 104 8 8 15-18" stroke="#477B59" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+</svg>

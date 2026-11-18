@@ -5,7 +5,6 @@
  */
 const assert = require('node:assert');
 const app = require('../src/app');
-const { initDb } = require('../src/db');
 
 const DEMO = [
   {
@@ -38,7 +37,6 @@ function cookieFrom(response) {
 }
 
 async function main() {
-  await initDb();
   const server = app.listen(0, '127.0.0.1');
   await new Promise((resolve) => server.once('listening', resolve));
   const base = `http://127.0.0.1:${server.address().port}`;

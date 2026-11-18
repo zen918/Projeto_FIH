@@ -5,6 +5,7 @@ const expressLayouts = require('express-ejs-layouts');
 const { sessionSecret, isVercel } = require('./config/env');
 const { QUICK_ACTIONS, navFor, isActive } = require('./config/constants');
 const { DEMO_ACCOUNTS, demoPassword } = require('./config/demo-accounts');
+const { initDb } = require('./db');
 const helpers = require('./utils/format');
 const { loadUser } = require('./middleware/auth');
 const { flash } = require('./middleware/flash');
@@ -42,6 +43,9 @@ app.use(
   }),
 );
 app.use(flash);
+app.use((req, res, next) => {
+  initDb().then(() => next(), next);
+});
 app.use(loadUser);
 
 app.use((req, res, next) => {

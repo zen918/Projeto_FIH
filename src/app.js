@@ -1,3 +1,5 @@
+const { createHash } = require('node:crypto');
+const fs = require('node:fs');
 const path = require('node:path');
 const express = require('express');
 const cookieSession = require('cookie-session');
@@ -14,6 +16,10 @@ const routes = require('./routes');
 
 const app = express();
 const isProduction = isVercel || process.env.NODE_ENV === 'production';
+app.locals.cssVersion = createHash('sha256')
+  .update(fs.readFileSync(path.join(__dirname, 'public', 'css', 'app.css')))
+  .digest('hex')
+  .slice(0, 12);
 
 app.disable('x-powered-by');
 app.set('trust proxy', 1);

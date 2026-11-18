@@ -55,7 +55,12 @@ async function main() {
     assert.strictEqual(payload.status, 'ok');
     assert.ok(payload.users >= 7, 'seed deve conter ao menos 7 usuários');
 
-    await expectStatus('/', 200);
+    const home = await expectStatus('/', 200);
+    const homeHtml = await home.text();
+    const cssVersion = homeHtml.match(/\/assets\/css\/app\.css\?v=([a-f0-9]{12})/);
+    assert.ok(cssVersion, 'CSS URL deve conter a versão do conteúdo');
+    checks += 1;
+    await expectStatus(`/assets/css/app.css?v=${cssVersion[1]}`, 200);
     await expectStatus('/login', 200);
     await expectStatus('/cadastro', 200);
     await expectStatus('/rastreio', 200);

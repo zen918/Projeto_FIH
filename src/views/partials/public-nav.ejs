@@ -1,0 +1,45 @@
+<nav class="public-navbar navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand brand" href="/">
+      <span class="brand-mark"><i class="bi bi-flower1"></i></span>
+      <span class="brand-text">
+        <strong>Plastikkimik</strong>
+        <small>PYTANGY</small>
+      </span>
+    </a>
+
+    <div class="d-flex align-items-center gap-2 order-lg-3">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Alternar tema">
+        <i class="bi bi-sun-fill theme-icon-light"></i>
+        <i class="bi bi-moon-stars-fill theme-icon-dark"></i>
+      </button>
+      <button
+        class="navbar-toggler border-0 shadow-none"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#publicNav"
+        aria-controls="publicNav"
+        aria-expanded="false"
+        aria-label="Abrir menu"
+      >
+        <i class="bi bi-list fs-3"></i>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse order-lg-2" id="publicNav">
+      <ul class="navbar-nav mx-lg-auto mb-3 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/#como-funciona">Como funciona</a></li>
+        <li class="nav-item"><a class="nav-link" href="/#impacto">Impacto</a></li>
+        <li class="nav-item"><a class="nav-link" href="/rastreio">Rastrear lote</a></li>
+      </ul>
+      <div class="d-flex flex-column flex-lg-row gap-2 align-items-lg-center">
+        <% if (currentUser) { %>
+          <a class="btn btn-brand" href="/app">Ir para plataforma <i class="bi bi-arrow-right ms-1"></i></a>
+        <% } else { %>
+          <a class="btn btn-ghost" href="/login">Entrar</a>
+          <a class="btn btn-brand" href="/cadastro">Criar conta</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,112 @@
+<%
+  const maxAvailable = batches.reduce(function (max, batch) { return Math.max(max, batch.availableKg); }, 0);
+%>
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Solicitação B2B</span>
+    <h1 class="page-title">Novo pedido</h1>
+    <p class="page-subtitle">Escolha um lote rastreado, defina o volume e o formato da embalagem.</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="/app/pedidos"><i class="bi bi-arrow-left me-1"></i> Voltar</a>
+</div>
+
+<div class="row g-3 g-xl-4">
+  <div class="col-lg-7">
+    <article class="panel-card">
+      <div class="panel-head compact">
+        <div>
+          <span class="eyebrow">Formulário</span>
+          <h2>Dados do pedido</h2>
+        </div>
+      </div>
+
+      <% if (!batches.length) { %>
+        <div class="empty-inline mb-3">
+          <i class="bi bi-info-circle"></i>
+          Nenhum lote com volume disponível neste momento.
+        </div>
+      <% } %>
+
+      <form action="/app/pedidos" method="POST" class="app-form" data-order-form>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label" for="batchId">Lote de bioplástico</label>
+            <select class="form-select" id="batchId" name="batchId" required data-batch-select>
+              <option value="">Selecione um lote</option>
+              <% batches.forEach(function (batch) { %>
+                <option
+                  value="<%= batch.id %>"
+                  data-available="<%= batch.availableKg %>"
+                  data-code="<%= batch.batchCode %>"
+                  <%= form.batchId === batch.id ? 'selected' : '' %>
+                >
+                  <%= batch.batchCode %> · <%= kg(batch.availableKg, 1) %> disponíveis · <%= batch.formulaVersion %>
+                </option>
+              <% }); %>
+            </select>
+            <div class="form-text" data-batch-hint>Selecione o lote para ver o volume máximo disponível.</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="quantityKg">Quantidade (kg)</label>
+            <input class="form-control" id="quantityKg" name="quantityKg" type="number" step="0.1" min="0.1" max="<%= maxAvailable || 5000 %>" value="<%= form.quantityKg %>" placeholder="Ex.: 1,5" required data-quantity-input />
+            <div class="form-text">O volume é reservado no lote ao enviar.</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="packagingType">Formato da embalagem</label>
+            <select class="form-select" id="packagingType" name="packagingType">
+              <% packagingOptions.forEach(function ([value, label]) { %>
+                <option value="<%= value %>" <%= form.packagingType === value ? 'selected' : '' %>><%= label %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="notes">Observações</label>
+            <textarea class="form-control" id="notes" name="notes" rows="3" maxlength="500" placeholder="Ex.: necessidade de entrega até o fim do mês."><%= form.notes %></textarea>
+          </div>
+        </div>
+
+        <div class="factor-box mt-4">
+          <i class="bi bi-calculator"></i>
+          <div>
+            <strong>Impacto estimado do pedido</strong>
+            <span data-impact-hint>Informe a quantidade para estimar plástico fóssil e CO₂ evitados.</span>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <button class="btn btn-brand" type="submit" <%= batches.length ? '' : 'disabled' %>><i class="bi bi-send me-1"></i> Enviar pedido</button>
+          <a class="btn btn-outline-secondary" href="/app/pedidos">Cancelar</a>
+        </div>
+      </form>
+    </article>
+  </div>
+
+  <div class="col-lg-5">
+    <article class="panel-card side-card">
+      <span class="card-kicker">Como funciona</span>
+      <h2 class="h5 fw-bold mt-2">Do pedido ao selo verde</h2>
+      <div class="timeline-list">
+        <div class="timeline-item">
+          <span class="timeline-dot tone-amber"></span>
+          <div><strong>Solicitado</strong><small>O volume fica reservado no lote.</small></div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot tone-sky"></span>
+          <div><strong>Análise e aprovação</strong><small>O laboratório valida a disponibilidade técnica.</small></div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot tone-petal"></span>
+          <div><strong>Produção</strong><small>A embalagem é preparada no formato escolhido.</small></div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot tone-sage"></span>
+          <div><strong>Entrega</strong><small>O impacto entra no seu selo digital.</small></div>
+        </div>
+      </div>
+      <div class="info-note mt-2">
+        <i class="bi bi-patch-check"></i>
+        <span>Cada pedido guarda o código de rastreio do lote para comprovação pública.</span>
+      </div>
+    </article>
+  </div>
+</div>

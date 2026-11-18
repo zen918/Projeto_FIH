@@ -1,0 +1,111 @@
+<section class="auth-section">
+  <div class="container">
+    <div class="auth-card auth-card-wide">
+      <div class="row g-0">
+        <div class="col-lg-4 auth-aside">
+          <div class="auth-aside-inner">
+            <span class="hero-badge"><i class="bi bi-flower1"></i> Novo cadastro</span>
+            <h1 class="auth-title mt-4">Entre no ciclo.</h1>
+            <p class="auth-subtitle">
+              Escolha o seu perfil na cadeia e comece a registrar impacto real,
+              rastreável e compartilhável.
+            </p>
+            <div class="auth-features">
+              <div><i class="bi bi-shield-check"></i><span>Aprovação e moderação pelo SuperAdmin</span></div>
+              <div><i class="bi bi-person-badge"></i><span>Perfil com foto, organização e cidade</span></div>
+              <div><i class="bi bi-patch-check"></i><span>Selo verde para o comércio B2B</span></div>
+            </div>
+            <div class="auth-aside-foot">
+              <span class="demo-chip">Ambiente de demonstração</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8 auth-form-col">
+          <div class="auth-form-inner">
+            <span class="eyebrow">Criar conta</span>
+            <h2 class="auth-form-title">Seus dados na cadeia circular</h2>
+            <p class="text-secondary mb-4">
+              Cadastro público para floriculturas, laboratório e comércio B2B.
+              <span class="fw-semibold">SuperAdmin é criado via seed/SQL.</span>
+            </p>
+
+            <form action="/cadastro" method="POST" class="auth-form">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label" for="fullName">Nome completo</label>
+                  <input class="form-control" id="fullName" name="fullName" value="<%= form.fullName || '' %>" placeholder="Marina Rosa" required minlength="3" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="email">E-mail</label>
+                  <input class="form-control" id="email" name="email" type="email" value="<%= form.email || '' %>" placeholder="voce@empresa.com" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="organizationName">Organização</label>
+                  <input class="form-control" id="organizationName" name="organizationName" value="<%= form.organizationName || '' %>" placeholder="Floricultura Rosa de Jaú" required />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label" for="city">Cidade</label>
+                  <input class="form-control" id="city" name="city" value="<%= form.city || '' %>" placeholder="Jaú" required />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label" for="phone">Telefone</label>
+                  <input class="form-control" id="phone" name="phone" value="<%= form.phone || '' %>" placeholder="(14) 99999-0000" required />
+                </div>
+              </div>
+
+              <p class="form-label mt-4 mb-2">Perfil na cadeia</p>
+              <div class="role-grid">
+                <label class="role-option">
+                  <input type="radio" name="role" value="floricultura" <%= (form.role || 'floricultura') === 'floricultura' ? 'checked' : '' %> />
+                  <span class="role-icon role-icon-flower"><i class="bi bi-flower1"></i></span>
+                  <strong>Floricultura</strong>
+                  <small>Registro de pétalas e coletas</small>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="pesquisador_lab" <%= form.role === 'pesquisador_lab' ? 'checked' : '' %> />
+                  <span class="role-icon role-icon-lab"><i class="bi bi-eyedropper"></i></span>
+                  <strong>Laboratório</strong>
+                  <small>Lotes, fórmulas e QR Codes</small>
+                </label>
+                <label class="role-option">
+                  <input type="radio" name="role" value="comercio_cliente" <%= form.role === 'comercio_cliente' ? 'checked' : '' %> />
+                  <span class="role-icon role-icon-client"><i class="bi bi-box-seam"></i></span>
+                  <strong>Comércio B2B</strong>
+                  <small>Catálogo, pedidos e selo</small>
+                </label>
+              </div>
+
+              <div class="row g-3 mt-1">
+                <div class="col-md-6">
+                  <label class="form-label" for="password">Senha</label>
+                  <input class="form-control" id="password" name="password" type="password" placeholder="Mín. 8 caracteres, letras e números" required minlength="8" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label" for="passwordConfirm">Confirmar senha</label>
+                  <input class="form-control" id="passwordConfirm" name="passwordConfirm" type="password" placeholder="Repita a senha" required minlength="8" />
+                </div>
+              </div>
+
+              <div class="info-note mt-4">
+                <i class="bi bi-info-circle"></i>
+                <span>
+                  O cadastro é imediatamente ativo nesta demonstração. Em produção,
+                  a equipe FIH pode exigir aprovação antes do primeiro acesso.
+                </span>
+              </div>
+
+              <button class="btn btn-brand btn-lg w-100 mt-4" type="submit">
+                Criar minha conta <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </form>
+
+            <p class="text-center text-secondary small mt-4 mb-0">
+              Já tem conta? <a class="fw-semibold link-brand" href="/login">Entrar</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

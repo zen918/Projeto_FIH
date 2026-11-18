@@ -1,0 +1,287 @@
+<%
+  const user = currentUser;
+  const roleCta = {
+    superadmin: { to: '/app/admin', label: 'Administração', icon: 'bi-shield-check' },
+    floricultura: { to: '/app/coletas/nova', label: 'Registrar coleta', icon: 'bi-plus-lg' },
+    pesquisador_lab: { to: '/app/lotes/novo', label: 'Novo lote', icon: 'bi-plus-lg' },
+    comercio_cliente: { to: '/app/pedidos/novo', label: 'Novo pedido', icon: 'bi-plus-lg' },
+  }[user.role];
+  const personal = snapshot.personal;
+%>
+
+<section class="dash-hero">
+  <div class="dash-hero-glow"></div>
+  <div class="row g-4 align-items-end position-relative">
+    <div class="col-lg-7">
+      <span class="hero-badge"><i class="bi bi-stars"></i> Visão 360° da cadeia · <%= roleLabel(user.role) %></span>
+      <h1 class="dash-title mt-3"><%= greeting %>, <%= firstName(user.fullName) %>.<br /><em>O ciclo está girando.</em></h1>
+      <p class="dash-subtitle">
+        Acompanhe o impacto da sua operação, avance as etapas e mantenha cada lote
+        rastreável da pétala à embalagem.
+      </p>
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <a class="btn btn-petal" href="<%= roleCta.to %>"><i class="bi <%= roleCta.icon %> me-1"></i><%= roleCta.label %></a>
+        <a class="btn btn-outline-light" href="/app/perfil"><i class="bi bi-person me-1"></i>Meu perfil</a>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="dash-impact">
+        <div class="d-flex align-items-center justify-content-between">
+          <span class="card-kicker">Seu impacto acumulado</span>
+          <i class="bi bi-flower2 text-petal-light"></i>
+        </div>
+        <div class="dash-impact-value">
+          <%= kg(personal.petalsDivertedKg, 1) %>
+          <span>de pétalas desviadas de aterros</span>
+        </div>
+        <div class="dash-impact-grid">
+          <div><strong><%= kg(personal.bioplasticProducedKg, 1) %></strong><span>bioplástico</span></div>
+          <div><strong><%= kg(personal.co2AvoidedKg, 1) %></strong><span>CO₂ evitado</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row g-3 g-xl-4 mt-1">
+  <div class="col-6 col-xl-3">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon tone-petal"><i class="bi bi-flower2"></i></span><i class="bi bi-arrow-up-right metric-arrow"></i></div>
+      <strong><%= kg(personal.petalsDivertedKg, 1) %></strong>
+      <span>Pétalas desviadas</span>
+      <small>Biomassa floral fora de aterros</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon tone-sage"><i class="bi bi-recycle"></i></span><i class="bi bi-arrow-up-right metric-arrow"></i></div>
+      <strong><%= kg(personal.bioplasticProducedKg, 1) %></strong>
+      <span>Bioplástico produzido</span>
+      <small>Produção acumulada e rastreada</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon tone-sky"><i class="bi bi-cloud-sun"></i></span><i class="bi bi-arrow-up-right metric-arrow"></i></div>
+      <strong><%= kg(personal.fossilPlasticAvoidedKg, 1) %></strong>
+      <span>Plástico fóssil evitado</span>
+      <small>Substituição estimada 1:1 por massa</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card">
+      <div class="metric-top"><span class="metric-icon tone-amber"><i class="bi bi-bag"></i></span><i class="bi bi-arrow-up-right metric-arrow"></i></div>
+      <strong><%= integer(personal.bagsEquivalent) %></strong>
+      <span>Sacolas substituídas</span>
+      <small>Equivalência em sacolas de 5 g</small>
+    </article>
+  </div>
+</div>
+
+<div class="row g-3 g-xl-4 mt-1">
+  <div class="col-xl-8">
+    <article class="panel-card h-100">
+      <div class="panel-head">
+        <div>
+          <span class="eyebrow">Série histórica</span>
+          <h2>Impacto mês a mês</h2>
+          <p>Pétalas coletadas e bioplástico produzido nos últimos 6 meses.</p>
+        </div>
+        <span class="live-pill"><span class="pulse-dot"></span> Tempo real</span>
+      </div>
+      <div class="chart-legend">
+        <span><span class="legend-dot legend-petal"></span> Pétalas coletadas</span>
+        <span><span class="legend-dot legend-sage"></span> Bioplástico produzido</span>
+      </div>
+      <div class="bar-chart">
+        <% snapshot.monthly.forEach(function (item) { %>
+          <div class="chart-group">
+            <div class="chart-bars">
+              <div class="chart-bar bar-petal" style="height: <%= percentWidth(item.petalsKg, chartMax) %>%" title="<%= kg(item.petalsKg, 1) %> de pétalas"></div>
+              <div class="chart-bar bar-sage" style="height: <%= percentWidth(item.bioplasticKg, chartMax) %>%" title="<%= kg(item.bioplasticKg, 1) %> de bioplástico"></div>
+            </div>
+            <span class="chart-label"><%= item.label %></span>
+          </div>
+        <% }); %>
+      </div>
+    </article>
+  </div>
+
+  <div class="col-xl-4">
+    <div class="d-flex flex-column gap-3 gap-xl-4 h-100">
+      <% if (user.role === 'superadmin') { %>
+        <article class="panel-card admin-alert-card">
+          <div class="panel-head compact">
+            <div>
+              <span class="eyebrow">Governança</span>
+              <h2>Contas em análise</h2>
+            </div>
+            <span class="count-bubble"><%= pendingUsers.length %></span>
+          </div>
+          <% if (pendingUsers.length) { %>
+            <div class="compact-list">
+              <% pendingUsers.slice(0, 3).forEach(function (pending) { %>
+                <div class="compact-row">
+                  <%- include('../partials/avatar', { name: pending.fullName, src: pending.avatarUrl, size: 'xs' }) %>
+                  <div class="min-w-0 flex-grow-1">
+                    <strong class="text-truncate d-block"><%= pending.fullName %></strong>
+                    <small class="text-truncate d-block"><%= pending.organizationName %></small>
+                  </div>
+                  <a class="icon-link" href="/app/admin?status=pending" aria-label="Analisar"><i class="bi bi-arrow-up-right"></i></a>
+                </div>
+              <% }); %>
+            </div>
+            <a class="btn btn-outline-secondary w-100 mt-3" href="/app/admin?status=pending">Abrir administração</a>
+          <% } else { %>
+            <div class="empty-inline"><i class="bi bi-check2-circle"></i> Nenhuma conta pendente.</div>
+          <% } %>
+        </article>
+      <% } else if (user.role === 'comercio_cliente') { %>
+        <article class="panel-card seal-preview-card">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="eyebrow">Selo digital</span>
+            <i class="bi bi-patch-check-fill text-success fs-4"></i>
+          </div>
+          <h2>Seu selo verde</h2>
+          <p>Comprove o impacto das embalagens biodegradáveis da sua operação.</p>
+          <div class="seal-mini">
+            <span class="seal-mini-brand"><i class="bi bi-flower1"></i> Plastikkimik Pytangy</span>
+            <strong><%= user.organizationName %></strong>
+            <span><%= kg(personal.bioplasticProducedKg, 1) %> de bioplástico rastreado</span>
+          </div>
+          <% if (lastDelivered) { %>
+            <a class="small link-brand fw-semibold" href="/r/<%= lastDelivered.traceCode %>" target="_blank" rel="noreferrer">
+              Último lote entregue: <%= lastDelivered.batchCode %> <i class="bi bi-arrow-up-right"></i>
+            </a>
+          <% } %>
+          <a class="btn btn-brand w-100 mt-3" href="/app/selo">Ver e imprimir meu selo</a>
+        </article>
+      <% } else { %>
+        <article class="panel-card">
+          <div class="panel-head compact">
+            <div>
+              <span class="eyebrow">Atalhos</span>
+              <h2>Próximos passos</h2>
+            </div>
+          </div>
+          <div class="quick-list">
+            <% if (user.role === 'floricultura') { %>
+              <a href="/app/coletas/nova"><span class="quick-icon tone-petal"><i class="bi bi-plus-lg"></i></span><span><strong>Registrar nova coleta</strong><small>Sinalize pétalas disponíveis</small></span><i class="bi bi-arrow-up-right"></i></a>
+              <a href="/app/coletas"><span class="quick-icon tone-sage"><i class="bi bi-flower1"></i></span><span><strong>Acompanhar coletas</strong><small>Veja o status logístico</small></span><i class="bi bi-arrow-up-right"></i></a>
+              <a href="/app/lotes"><span class="quick-icon tone-sky"><i class="bi bi-box-seam"></i></span><span><strong>Ver lotes gerados</strong><small>Da sua biomassa ao bioplástico</small></span><i class="bi bi-arrow-up-right"></i></a>
+            <% } else { %>
+              <a href="/app/coletas"><span class="quick-icon tone-petal"><i class="bi bi-flower1"></i></span><span><strong>Gerenciar coletas</strong><small>Avance a logística reversa</small></span><i class="bi bi-arrow-up-right"></i></a>
+              <a href="/app/lotes/novo"><span class="quick-icon tone-sage"><i class="bi bi-plus-lg"></i></span><span><strong>Criar novo lote</strong><small>Vincule pétalas e gere o QR</small></span><i class="bi bi-arrow-up-right"></i></a>
+              <a href="/app/pedidos"><span class="quick-icon tone-sky"><i class="bi bi-bag-check"></i></span><span><strong>Analisar pedidos B2B</strong><small>Avance produção e entregas</small></span><i class="bi bi-arrow-up-right"></i></a>
+            <% } %>
+          </div>
+        </article>
+      <% } %>
+
+      <article class="panel-card counters-card">
+        <div class="counters-grid">
+          <div><strong><%= snapshot.counters.collections %></strong><span>coletas</span></div>
+          <div><strong><%= snapshot.counters.batches %></strong><span>lotes</span></div>
+          <div><strong><%= snapshot.counters.orders %></strong><span>pedidos ativos</span></div>
+          <div><strong><%= user.role === 'superadmin' ? snapshot.counters.users : snapshot.counters.florists %></strong><span><%= user.role === 'superadmin' ? 'usuários' : 'floriculturas' %></span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 g-xl-4 mt-1">
+  <div class="col-lg-6">
+    <article class="panel-card h-100">
+      <div class="panel-head compact">
+        <div><span class="eyebrow">Movimento</span><h2>Últimas coletas</h2></div>
+        <a class="small link-brand fw-semibold" href="/app/coletas">Ver todas <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <% if (recentCollections.length) { %>
+        <div class="activity-list">
+          <% recentCollections.slice(0, 4).forEach(function (collection) { %>
+            <div class="activity-row">
+              <span class="activity-icon tone-petal"><i class="bi bi-flower1"></i></span>
+              <div class="min-w-0 flex-grow-1">
+                <strong><%= kg(collection.weightKg, 1) %> · <%= collection.floristOrganization %></strong>
+                <small><%= collection.floristCity %> · <%= timeAgo(collection.createdAt) %></small>
+              </div>
+              <%- include('../partials/status-badge', { status: collection.status }) %>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="empty-inline"><i class="bi bi-flower1"></i> Nenhuma coleta registrada ainda.</div>
+      <% } %>
+    </article>
+  </div>
+
+  <div class="col-lg-6">
+    <article class="panel-card h-100">
+      <div class="panel-head compact">
+        <div><span class="eyebrow">Rastreabilidade</span><h2>Lotes recentes</h2></div>
+        <a class="small link-brand fw-semibold" href="/app/lotes">Ver catálogo <i class="bi bi-arrow-right"></i></a>
+      </div>
+      <% if (recentBatches.length) { %>
+        <div class="activity-list">
+          <% recentBatches.slice(0, 4).forEach(function (batch) { %>
+            <a class="activity-row activity-link" href="/app/lotes/<%= batch.id %>">
+              <span class="activity-icon tone-sage"><i class="bi bi-box-seam"></i></span>
+              <div class="min-w-0 flex-grow-1">
+                <strong><%= batch.batchCode %> · <%= batch.formulaVersion %></strong>
+                <small><%= kg(batch.weightProducedKg, 1) %> · <%= batch.floristCity %> · QR <%= batch.traceCode %></small>
+              </div>
+              <%- include('../partials/status-badge', { status: batch.status }) %>
+            </a>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="empty-inline"><i class="bi bi-box-seam"></i> Nenhum lote produzido ainda.</div>
+      <% } %>
+    </article>
+  </div>
+</div>
+
+<% if (recentOrders.length) { %>
+  <div class="row mt-1">
+    <div class="col-12">
+      <article class="panel-card">
+        <div class="panel-head compact">
+          <div><span class="eyebrow">Relações B2B</span><h2>Pedidos recentes</h2></div>
+          <a class="small link-brand fw-semibold" href="/app/pedidos">Abrir pedidos <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="table-responsive d-none d-md-block">
+          <table class="table app-table align-middle mb-0">
+            <thead>
+              <tr><th>Lote</th><th>Cliente</th><th>Volume</th><th>Formato</th><th>Status</th><th class="text-end">Ação</th></tr>
+            </thead>
+            <tbody>
+              <% recentOrders.slice(0, 5).forEach(function (order) { %>
+                <tr>
+                  <td><strong><%= order.batchCode %></strong><small class="d-block text-secondary"><%= order.formulaVersion %></small></td>
+                  <td><%= order.clientOrganization %><small class="d-block text-secondary"><%= order.clientCity %></small></td>
+                  <td><%= kg(order.quantityKg, 1) %></td>
+                  <td><%= packagingLabel(order.packagingType) %></td>
+                  <td><%- include('../partials/status-badge', { status: order.status }) %></td>
+                  <td class="text-end"><a class="icon-link" href="/app/pedidos" aria-label="Ver pedidos"><i class="bi bi-arrow-up-right"></i></a></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+        <div class="activity-list d-md-none">
+          <% recentOrders.slice(0, 5).forEach(function (order) { %>
+            <a class="activity-row activity-link" href="/app/pedidos">
+              <span class="activity-icon tone-sky"><i class="bi bi-bag-check"></i></span>
+              <div class="min-w-0 flex-grow-1">
+                <strong><%= order.batchCode %> · <%= order.clientOrganization %></strong>
+                <small><%= kg(order.quantityKg, 1) %> · <%= packagingLabel(order.packagingType) %> · <%= timeAgo(order.createdAt) %></small>
+              </div>
+              <%- include('../partials/status-badge', { status: order.status }) %>
+            </a>
+          <% }); %>
+        </div>
+      </article>
+    </div>
+  </div>
+<% } %>

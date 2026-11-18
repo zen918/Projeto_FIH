@@ -1,0 +1,114 @@
+<%
+  const suggestions = ['V1 - Amido + glicerol', 'V2 - Pétalas + quitosana', 'V3 - Blend flexível'];
+%>
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Produção do laboratório</span>
+    <h1 class="page-title">Novo lote de bioplástico</h1>
+    <p class="page-subtitle">Vincule uma coleta processada, registre a fórmula e gere o QR Code de rastreio.</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="/app/lotes"><i class="bi bi-arrow-left me-1"></i> Voltar</a>
+</div>
+
+<div class="row g-3 g-xl-4">
+  <div class="col-lg-7">
+    <article class="panel-card">
+      <div class="panel-head compact">
+        <div>
+          <span class="eyebrow">Formulário</span>
+          <h2>Dados do lote</h2>
+        </div>
+      </div>
+
+      <% if (!collections.length) { %>
+        <div class="empty-inline mb-3">
+          <i class="bi bi-info-circle"></i>
+          Nenhuma coleta disponível. Marque uma coleta como <strong>coletada</strong> antes de criar o lote.
+        </div>
+      <% } %>
+
+      <form action="/app/lotes" method="POST" class="app-form" data-batch-form>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label" for="collectionId">Coleta de origem</label>
+            <select class="form-select" id="collectionId" name="collectionId" required data-collection-select>
+              <option value="">Selecione uma coleta disponível</option>
+              <% collections.forEach(function (collection) { %>
+                <option
+                  value="<%= collection.id %>"
+                  data-weight="<%= collection.weightKg %>"
+                  data-label="<%= collection.floristOrganization %> · <%= kg(collection.weightKg, 1) %>"
+                  <%= form.collectionId === collection.id ? 'selected' : '' %>
+                >
+                  <%= collection.floristOrganization %> · <%= kg(collection.weightKg, 1) %> · retirada <%= date(collection.pickupDate) %>
+                </option>
+              <% }); %>
+            </select>
+            <div class="form-text" data-collection-hint>As pétalas precisam já ter sido coletadas.</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="formulaVersion">Versão da fórmula</label>
+            <input class="form-control" id="formulaVersion" name="formulaVersion" list="formulaOptions" value="<%= form.formulaVersion %>" placeholder="Ex.: V3 - Blend flexível" required />
+            <datalist id="formulaOptions">
+              <% suggestions.forEach(function (formula) { %><option value="<%= formula %>"></option><% }); %>
+            </datalist>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="batchCode">Código do lote <span class="text-secondary fw-normal">(opcional)</span></label>
+            <input class="form-control" id="batchCode" name="batchCode" value="<%= form.batchCode %>" placeholder="Gerado automaticamente" />
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label" for="weightProducedKg">Produção (kg)</label>
+            <input class="form-control" id="weightProducedKg" name="weightProducedKg" type="number" step="0.1" min="0.1" value="<%= form.weightProducedKg %>" placeholder="5,0" required data-weight-input />
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label" for="biodegradationDays">Biodegradação (dias)</label>
+            <input class="form-control" id="biodegradationDays" name="biodegradationDays" type="number" min="1" max="365" value="<%= form.biodegradationDays %>" required />
+          </div>
+          <div class="col-sm-4">
+            <label class="form-label" for="tensileStrength">Resistência (MPa)</label>
+            <input class="form-control" id="tensileStrength" name="tensileStrength" type="number" step="0.1" min="0" value="<%= form.tensileStrength %>" placeholder="Opcional" />
+          </div>
+        </div>
+
+        <div class="factor-box mt-4">
+          <i class="bi bi-calculator"></i>
+          <div>
+            <strong>Rendimento esperado</strong>
+            <span data-yield-hint>Selecione a coleta para simular o rendimento de 0,3 kg de bioplástico por kg de pétalas.</span>
+          </div>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <button class="btn btn-brand" type="submit" <%= collections.length ? '' : 'disabled' %>><i class="bi bi-check2 me-1"></i> Criar lote e gerar QR</button>
+          <a class="btn btn-outline-secondary" href="/app/lotes">Cancelar</a>
+        </div>
+      </form>
+    </article>
+  </div>
+
+  <div class="col-lg-5">
+    <article class="panel-card side-card">
+      <span class="card-kicker">Rastreabilidade</span>
+      <h2 class="h5 fw-bold mt-2">O que o QR Code entrega</h2>
+      <div class="quick-list">
+        <div class="quick-row">
+          <span class="quick-icon tone-petal"><i class="bi bi-flower1"></i></span>
+          <span><strong>Origem da biomassa</strong><small>Floricultura, cidade e data da coleta</small></span>
+        </div>
+        <div class="quick-row">
+          <span class="quick-icon tone-sage"><i class="bi bi-eyedropper"></i></span>
+          <span><strong>Fórmula e qualidade</strong><small>Versão, resistência e biodegradação</small></span>
+        </div>
+        <div class="quick-row">
+          <span class="quick-icon tone-sky"><i class="bi bi-globe2"></i></span>
+          <span><strong>Página pública</strong><small>Qualquer pessoa consulta pelo código</small></span>
+        </div>
+      </div>
+      <div class="info-note mt-3">
+        <i class="bi bi-lightbulb"></i>
+        <span>Ao concluir o lote, ele pode ser ofertado aos pedidos B2B enquanto houver volume disponível.</span>
+      </div>
+    </article>
+  </div>
+</div>

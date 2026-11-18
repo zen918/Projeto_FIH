@@ -1,0 +1,106 @@
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Catálogo rastreado</span>
+    <h1 class="page-title">Lotes de bioplástico</h1>
+    <p class="page-subtitle">
+      <%= isFlorist
+        ? 'Veja o bioplástico gerado a partir das pétalas da sua floricultura.'
+        : 'Cada lote tem origem, fórmula, resistência e QR Code público de rastreio.' %>
+    </p>
+  </div>
+  <% if (['pesquisador_lab', 'superadmin'].includes(currentUser.role)) { %>
+    <a class="btn btn-brand" href="/app/lotes/novo"><i class="bi bi-plus-lg me-1"></i> Novo lote</a>
+  <% } %>
+</div>
+
+<div class="row g-3">
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-sage"><i class="bi bi-box-seam"></i></span></div>
+      <strong><%= kg(summary.producedKg, 1) %></strong>
+      <span>Total produzido</span>
+      <small><%= summary.total %> lotes registrados</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-amber"><i class="bi bi-hourglass-split"></i></span></div>
+      <strong><%= integer(summary.active) %></strong>
+      <span>Em produção</span>
+      <small>Lotes ainda abertos</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-petal"><i class="bi bi-bag-check"></i></span></div>
+      <strong><%= kg(summary.reservedKg, 1) %></strong>
+      <span>Reservado em pedidos</span>
+      <small>Volume comprometido</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-sky"><i class="bi bi-check2-circle"></i></span></div>
+      <strong><%= kg(summary.availableKg, 1) %></strong>
+      <span>Disponível</span>
+      <small>Pronto para novos pedidos</small>
+    </article>
+  </div>
+</div>
+
+<article class="panel-card mt-3 mt-xl-4">
+  <div class="panel-head">
+    <div>
+      <span class="eyebrow">Catálogo</span>
+      <h2>Lotes registrados</h2>
+      <p>Consulte a ficha completa, o QR Code e os pedidos vinculados.</p>
+    </div>
+    <form class="filter-form" action="/app/lotes" method="GET">
+      <div class="input-icon input-icon-sm">
+        <i class="bi bi-search"></i>
+        <input class="form-control form-control-sm" name="q" value="<%= search %>" placeholder="Buscar lote ou fórmula" aria-label="Buscar lote" />
+      </div>
+      <select class="form-select form-select-sm" name="status" aria-label="Filtrar por status" onchange="this.form.submit()">
+        <option value="">Todos os status</option>
+        <option value="em_producao" <%= status === 'em_producao' ? 'selected' : '' %>>Em produção</option>
+        <option value="concluido" <%= status === 'concluido' ? 'selected' : '' %>>Concluído</option>
+        <option value="arquivado" <%= status === 'arquivado' ? 'selected' : '' %>>Arquivado</option>
+      </select>
+    </form>
+  </div>
+
+  <% if (batches.length) { %>
+    <div class="batch-grid">
+      <% batches.forEach(function (batch) { %>
+        <a class="batch-card" href="/app/lotes/<%= batch.id %>">
+          <div class="batch-card-top">
+            <span class="batch-code"><i class="bi bi-upc-scan"></i> <%= batch.batchCode %></span>
+            <%- include('../../partials/status-badge', { status: batch.status }) %>
+          </div>
+          <h3><%= batch.formulaVersion %></h3>
+          <p class="batch-origin">
+            <i class="bi bi-flower1"></i> <%= batch.floristOrganization %> · <%= batch.floristCity %>
+          </p>
+          <div class="batch-stats">
+            <div><strong><%= kg(batch.weightProducedKg, 1) %></strong><span>produzido</span></div>
+            <div><strong><%= kg(batch.availableKg, 1) %></strong><span>disponível</span></div>
+            <div><strong><%= batch.biodegradationDays %> d</strong><span>biodegradação</span></div>
+          </div>
+          <div class="batch-card-foot">
+            <span class="trace-tag"><i class="bi bi-qr-code"></i> <%= batch.traceCode %></span>
+            <span>Ver ficha <i class="bi bi-arrow-up-right"></i></span>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <i class="bi bi-box-seam"></i>
+      <h3>Nenhum lote encontrado</h3>
+      <p>Ajuste a busca/filtro ou crie o primeiro lote a partir de uma coleta processada.</p>
+      <% if (['pesquisador_lab', 'superadmin'].includes(currentUser.role)) { %>
+        <a class="btn btn-brand" href="/app/lotes/novo"><i class="bi bi-plus-lg me-1"></i> Novo lote</a>
+      <% } %>
+    </div>
+  <% } %>
+</article>

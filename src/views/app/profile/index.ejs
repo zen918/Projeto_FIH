@@ -1,0 +1,101 @@
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Sua conta</span>
+    <h1 class="page-title">Meu perfil</h1>
+    <p class="page-subtitle">Atualize seus dados, foto e credenciais de acesso.</p>
+  </div>
+  <span class="badge-role"><%= roleLabel(currentUser.role) %></span>
+</div>
+
+<div class="row g-3 g-xl-4">
+  <div class="col-lg-4">
+    <article class="panel-card profile-card-panel">
+      <div class="profile-avatar-wrap">
+        <%- include('../../partials/avatar', { name: currentUser.fullName, src: currentUser.avatarUrl, size: 'xl' }) %>
+      </div>
+      <h2 class="h5 fw-bold text-center mt-3 mb-1"><%= currentUser.fullName %></h2>
+      <p class="text-secondary text-center small mb-1"><%= currentUser.organizationName %></p>
+      <p class="text-secondary text-center small mb-3"><%= currentUser.city %> · desde <%= date(currentUser.createdAt) %></p>
+
+      <form action="/app/perfil/avatar" method="POST" enctype="multipart/form-data" class="app-form">
+        <label class="form-label" for="avatar">Foto de perfil</label>
+        <input class="form-control form-control-sm" id="avatar" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" data-avatar-input />
+        <div class="form-text">JPG, PNG ou WebP · até 1,5 MB.</div>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-sm btn-brand" type="submit"><i class="bi bi-upload me-1"></i> Enviar foto</button>
+          <% if (currentUser.avatarUrl) { %>
+            <button class="btn btn-sm btn-outline-danger" type="submit" formaction="/app/perfil/avatar/remover"><i class="bi bi-trash me-1"></i> Remover</button>
+          <% } %>
+        </div>
+      </form>
+
+      <div class="profile-facts mt-4">
+        <div><i class="bi bi-envelope"></i><span><%= currentUser.email %></span></div>
+        <div><i class="bi bi-telephone"></i><span><%= currentUser.phone %></span></div>
+        <div><i class="bi bi-geo-alt"></i><span><%= currentUser.city %></span></div>
+      </div>
+    </article>
+  </div>
+
+  <div class="col-lg-8">
+    <article class="panel-card">
+      <div class="panel-head compact">
+        <div>
+          <span class="eyebrow">Dados cadastrais</span>
+          <h2>Informações da organização</h2>
+        </div>
+      </div>
+      <form action="/app/perfil" method="POST" class="app-form">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="fullName">Nome completo</label>
+            <input class="form-control" id="fullName" name="fullName" value="<%= currentUser.fullName %>" required minlength="3" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="organizationName">Organização</label>
+            <input class="form-control" id="organizationName" name="organizationName" value="<%= currentUser.organizationName %>" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="city">Cidade</label>
+            <input class="form-control" id="city" name="city" value="<%= currentUser.city %>" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="phone">Telefone</label>
+            <input class="form-control" id="phone" name="phone" value="<%= currentUser.phone %>" required />
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <button class="btn btn-brand" type="submit"><i class="bi bi-check2 me-1"></i> Salvar alterações</button>
+        </div>
+      </form>
+    </article>
+
+    <article class="panel-card mt-3 mt-xl-4">
+      <div class="panel-head compact">
+        <div>
+          <span class="eyebrow">Segurança</span>
+          <h2>Alterar senha</h2>
+        </div>
+      </div>
+      <form action="/app/perfil/senha" method="POST" class="app-form">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label" for="currentPassword">Senha atual</label>
+            <input class="form-control" id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="password">Nova senha</label>
+            <input class="form-control" id="password" name="password" type="password" autocomplete="new-password" placeholder="8+ caracteres, letras e números" required minlength="8" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="passwordConfirm">Confirmar nova senha</label>
+            <input class="form-control" id="passwordConfirm" name="passwordConfirm" type="password" autocomplete="new-password" required minlength="8" />
+          </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-shield-lock me-1"></i> Atualizar senha</button>
+        </div>
+      </form>
+    </article>
+  </div>
+</div>

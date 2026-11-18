@@ -1,0 +1,23 @@
+<section class="trace-search-page">
+  <div class="container">
+    <div class="trace-search-card trace-not-found">
+      <span class="not-found-icon"><i class="bi bi-patch-question"></i></span>
+      <h1 class="trace-title">Código não encontrado</h1>
+      <p class="trace-subtitle">
+        Não localizamos um lote com o código <code><%= code %></code>. Confira os caracteres
+        ou tente novamente com um dos exemplos abaixo.
+      </p>
+
+      <div class="d-flex flex-wrap justify-content-center gap-2">
+        <% examples.forEach(function (batch) { %>
+          <a class="trace-chip" href="/r/<%= batch.traceCode %>"><i class="bi bi-qr-code"></i> <%= batch.traceCode %></a>
+        <% }); %>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+        <a class="btn btn-brand" href="/rastreio"><i class="bi bi-search me-1"></i> Consultar outro código</a>
+        <a class="btn btn-outline-secondary" href="/">Voltar ao início</a>
+      </div>
+    </div>
+  </div>
+</section>

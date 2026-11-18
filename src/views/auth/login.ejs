@@ -1,0 +1,89 @@
+<section class="auth-section">
+  <div class="container">
+    <div class="auth-card">
+      <div class="row g-0">
+        <div class="col-lg-5 auth-aside">
+          <div class="auth-aside-inner">
+            <span class="hero-badge"><i class="bi bi-flower2"></i> Plataforma oficial</span>
+            <h1 class="auth-title mt-4">Bem-vindo de volta.</h1>
+            <p class="auth-subtitle">
+              Entre para acompanhar coletas, lotes de bioplástico e o impacto circular
+              da sua operação.
+            </p>
+            <div class="auth-features">
+              <div><i class="bi bi-qr-code"></i><span>Rastreabilidade da pétala à embalagem</span></div>
+              <div><i class="bi bi-graph-up-arrow"></i><span>Impacto ambiental em tempo real</span></div>
+              <div><i class="bi bi-people"></i><span>Perfis e permissões por elo da cadeia</span></div>
+            </div>
+            <div class="auth-aside-foot">
+              <span class="ods-pill">ODS 12</span>
+              <span class="ods-pill">ODS 14</span>
+              <span class="ods-pill">ODS 15</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7 auth-form-col">
+          <div class="auth-form-inner">
+            <span class="eyebrow">Acesso à plataforma</span>
+            <h2 class="auth-form-title">Entrar na conta</h2>
+            <p class="text-secondary mb-4">Use uma conta de demonstração ou suas credenciais.</p>
+
+            <div class="demo-box">
+              <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                <span class="demo-box-title"><i class="bi bi-lightning-charge me-1"></i>Acesso rápido · demonstração</span>
+                <code class="demo-password"><%= demoPassword %></code>
+              </div>
+              <div class="row g-2">
+                <% demoAccounts.forEach(function (account, index) { %>
+                  <div class="col-sm-6">
+                    <form action="/demo-login" method="POST">
+                      <input type="hidden" name="email" value="<%= account.email %>" />
+                      <button class="demo-account demo-account-compact" type="submit">
+                        <span class="demo-icon demo-icon-<%= index %>">
+                          <i class="bi <%= index === 0 ? 'bi-shield-check' : index === 1 ? 'bi-flower1' : index === 2 ? 'bi-eyedropper' : 'bi-box-seam' %>"></i>
+                        </span>
+                        <span class="min-w-0 text-start">
+                          <strong><%= account.label %></strong>
+                          <small><%= account.email %></small>
+                        </span>
+                      </button>
+                    </form>
+                  </div>
+                <% }); %>
+              </div>
+            </div>
+
+            <form action="/login" method="POST" class="auth-form">
+              <div class="mb-3">
+                <label class="form-label" for="email">E-mail</label>
+                <div class="input-icon">
+                  <i class="bi bi-envelope"></i>
+                  <input class="form-control" id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" value="<%= email %>" required />
+                </div>
+              </div>
+              <div class="mb-2">
+                <label class="form-label" for="password">Senha</label>
+                <div class="input-icon">
+                  <i class="bi bi-lock"></i>
+                  <input class="form-control" id="password" name="password" type="password" autocomplete="current-password" placeholder="Sua senha" required />
+                  <button class="input-eye" type="button" data-toggle-password="password" aria-label="Mostrar senha"><i class="bi bi-eye"></i></button>
+                </div>
+              </div>
+              <div class="text-end mb-3">
+                <a class="small fw-semibold link-brand" href="/recuperar-senha">Esqueci minha senha</a>
+              </div>
+              <button class="btn btn-brand btn-lg w-100" type="submit">
+                Entrar na plataforma <i class="bi bi-arrow-right ms-1"></i>
+              </button>
+            </form>
+
+            <p class="text-center text-secondary small mt-4 mb-0">
+              Ainda não tem uma conta? <a class="fw-semibold link-brand" href="/cadastro">Criar conta</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

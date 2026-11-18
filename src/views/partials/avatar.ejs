@@ -1,0 +1,7 @@
+<span class="avatar avatar-<%= size || 'md' %>" aria-hidden="true">
+  <% if (src) { %>
+    <img src="<%= src %>" alt="" />
+  <% } else { %>
+    <span><%= initials(name) %></span>
+  <% } %>
+</span>

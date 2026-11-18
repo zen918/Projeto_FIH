@@ -1,0 +1,101 @@
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Nova sinalização</span>
+    <h1 class="page-title">Registrar coleta</h1>
+    <p class="page-subtitle">Informe o volume, a qualidade e a data ideal de retirada das pétalas.</p>
+  </div>
+  <a class="btn btn-outline-secondary" href="/app/coletas"><i class="bi bi-arrow-left me-1"></i> Voltar</a>
+</div>
+
+<div class="row g-3 g-xl-4">
+  <div class="col-lg-7">
+    <article class="panel-card">
+      <div class="panel-head compact">
+        <div>
+          <span class="eyebrow">Formulário</span>
+          <h2>Dados da coleta</h2>
+        </div>
+      </div>
+
+      <form action="/app/coletas" method="POST" class="app-form">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <label class="form-label" for="weightKg">Peso das pétalas (kg)</label>
+            <div class="input-icon">
+              <i class="bi bi-flower1"></i>
+              <input class="form-control" id="weightKg" name="weightKg" type="number" step="0.1" min="0.1" max="5000" value="<%= form.weightKg %>" placeholder="Ex.: 12,5" required />
+            </div>
+            <div class="form-text">Quantidade estimada de pétalas separadas.</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label" for="pickupDate">Data de retirada</label>
+            <input class="form-control" id="pickupDate" name="pickupDate" type="date" value="<%= form.pickupDate || todayInput() %>" required />
+            <div class="form-text">Prazo máximo para evitar degradação.</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="qualityStatus">Qualidade das pétalas</label>
+            <select class="form-select" id="qualityStatus" name="qualityStatus">
+              <% qualityOptions.forEach(function ([value, label]) { %>
+                <option value="<%= value %>" <%= form.qualityStatus === value ? 'selected' : '' %>><%= label %></option>
+              <% }); %>
+            </select>
+            <div class="form-text">Pétalas murchas ou com fungos reduzem o rendimento do lote.</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="address">Endereço de retirada</label>
+            <div class="input-icon">
+              <i class="bi bi-geo-alt"></i>
+              <input class="form-control" id="address" name="address" value="<%= form.address %>" placeholder="Rua, número, bairro · cidade" required />
+            </div>
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="notes">Observações</label>
+            <textarea class="form-control" id="notes" name="notes" rows="3" maxlength="500" placeholder="Ex.: pétalas de rosas vermelhas armazenadas em câmara fria."><%= form.notes %></textarea>
+          </div>
+        </div>
+
+        <div class="info-note mt-4">
+          <i class="bi bi-info-circle"></i>
+          <span>Após o registro, o laboratório agenda a retirada e atualiza o status até a coleta ser processada.</span>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <button class="btn btn-brand" type="submit"><i class="bi bi-check2 me-1"></i> Registrar coleta</button>
+          <a class="btn btn-outline-secondary" href="/app/coletas">Cancelar</a>
+        </div>
+      </form>
+    </article>
+  </div>
+
+  <div class="col-lg-5">
+    <article class="panel-card side-card">
+      <span class="card-kicker">Como funciona</span>
+      <h2 class="h5 fw-bold mt-2">Da sinalização ao bioplástico</h2>
+      <div class="timeline-list">
+        <div class="timeline-item">
+          <span class="timeline-dot tone-petal"></span>
+          <div><strong>Solicitada</strong><small>Você registra o volume e o prazo.</small></div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot tone-amber"></span>
+          <div><strong>Agendada</strong><small>O laboratório organiza a logística reversa.</small></div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot tone-sky"></span>
+          <div><strong>Coletada</strong><small>A biomassa sai da floricultura.</small></div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot tone-sage"></span>
+          <div><strong>Processada</strong><small>O lote de bioplástico é gerado com QR Code.</small></div>
+        </div>
+      </div>
+      <div class="factor-box mt-2">
+        <i class="bi bi-calculator"></i>
+        <div>
+          <strong>Rendimento do MVP</strong>
+          <span>Cada 10 kg de pétalas geram cerca de 3 kg de bioplástico.</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

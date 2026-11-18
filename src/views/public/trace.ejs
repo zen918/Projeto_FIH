@@ -1,0 +1,96 @@
+<section class="trace-page">
+  <div class="container">
+    <div class="trace-hero">
+      <span class="verified-pill"><i class="bi bi-patch-check-fill"></i> Rastreabilidade verificada</span>
+      <h1 class="trace-title">A história deste lote começa nas pétalas.</h1>
+      <p class="trace-subtitle">
+        Código público <code><%= batch.traceCode %></code> · registrado pela Equipe FIH no ecossistema Plastikkimik Pytangy.
+      </p>
+    </div>
+
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-7">
+        <article class="trace-card h-100">
+          <div class="trace-card-head">
+            <div>
+              <span class="eyebrow">Lote</span>
+              <h2><%= batch.batchCode %></h2>
+              <p><%= batch.formulaVersion %></p>
+            </div>
+            <%- include('../partials/status-badge', { status: batch.status }) %>
+          </div>
+
+          <div class="trace-metrics">
+            <div><strong><%= kg(metrics.petalsDivertedKg, 1) %></strong><span>pétalas desviadas</span></div>
+            <div><strong><%= kg(metrics.bioplasticProducedKg, 1) %></strong><span>bioplástico</span></div>
+            <div><strong><%= kg(metrics.co2AvoidedKg, 1) %></strong><span>CO₂ evitado</span></div>
+            <div><strong><%= integer(metrics.bagsEquivalent) %></strong><span>sacolas equivalentes</span></div>
+          </div>
+
+          <h3 class="detail-title">Origem e produção</h3>
+          <dl class="detail-list">
+            <div><dt>Floricultura de origem</dt><dd><%= batch.floristOrganization %></dd></div>
+            <div><dt>Cidade</dt><dd><%= batch.floristCity %></dd></div>
+            <div><dt>Peso de pétalas</dt><dd><%= kg(batch.petalsKg, 1) %> · qualidade <%= qualityLabel(batch.qualityStatus).toLowerCase() %></dd></div>
+            <div><dt>Fórmula</dt><dd><%= batch.formulaVersion %></dd></div>
+            <div><dt>Laboratório</dt><dd><%= batch.researcherOrganization %></dd></div>
+            <div><dt>Biodegradação estimada</dt><dd><%= batch.biodegradationDays %> dias</dd></div>
+            <div><dt>Resistência mecânica</dt><dd><%= batch.tensileStrength ? `${number(batch.tensileStrength, 1)} MPa` : 'Não informada' %></dd></div>
+            <div><dt>Data de produção</dt><dd><%= date(batch.createdAt) %></dd></div>
+          </dl>
+
+          <div class="trace-chain">
+            <span class="trace-chain-step">
+              <i class="bi bi-flower1"></i>
+              <span>Pétalas coletadas<!-- --></span>
+            </span>
+            <i class="bi bi-arrow-right trace-chain-arrow"></i>
+            <span class="trace-chain-step">
+              <i class="bi bi-eyedropper"></i>
+              <span>Formulação no laboratório</span>
+            </span>
+            <i class="bi bi-arrow-right trace-chain-arrow"></i>
+            <span class="trace-chain-step">
+              <i class="bi bi-box-seam"></i>
+              <span>Bioplástico rastreado</span>
+            </span>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-lg-5">
+        <article class="trace-card trace-qr-card h-100">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="eyebrow">QR do lote</span>
+            <i class="bi bi-qr-code fs-5 text-secondary"></i>
+          </div>
+          <div class="qr-frame">
+            <img src="<%= qrDataUrl %>" alt="QR Code do lote <%= batch.traceCode %>" width="260" height="260" />
+          </div>
+          <p class="qr-code-text"><%= batch.traceCode %></p>
+          <p class="text-secondary small text-center">Este código é único e pode ser impresso na embalagem.</p>
+          <div class="d-grid gap-2">
+            <a class="btn btn-brand" href="/r/<%= batch.traceCode %>/qr.png?download=1"><i class="bi bi-download me-1"></i> Baixar QR Code</a>
+            <a class="btn btn-outline-secondary" href="/rastreio"><i class="bi bi-search me-1"></i> Consultar outro lote</a>
+          </div>
+          <div class="trace-verify">
+            <i class="bi bi-shield-check"></i>
+            <span>Página pública gerada a partir dos registros oficiais da plataforma.</span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="trace-cta">
+      <div>
+        <span class="eyebrow eyebrow-light">Faça parte do ciclo</span>
+        <h2 class="h3 fw-bold mb-1">Sua floricultura também pode transformar descarte em produto.</h2>
+        <p class="mb-0 text-white-50">Cadastre-se na plataforma e acompanhe o impacto da sua biomassa floral.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-petal" href="/cadastro">Criar conta</a>
+        <a class="btn btn-outline-light" href="/">Conhecer o projeto</a>
+      </div>
+    </div>
+  </div>
+</section>

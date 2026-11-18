@@ -1,0 +1,115 @@
+<%
+  const actionFor = function (user) {
+    if (user.status === 'pending') return { action: 'approve', label: 'Aprovar', className: 'btn-brand-soft', icon: 'bi-check2' };
+    if (user.status === 'active') return { action: 'block', label: 'Bloquear', className: 'btn-outline-danger', icon: 'bi-slash-circle' };
+    return { action: 'reactivate', label: 'Reativar', className: 'btn-brand-soft', icon: 'bi-arrow-clockwise' };
+  };
+  const statusOptions = [
+    { value: '', label: 'Todos os status' },
+    { value: 'pending', label: 'Em análise' },
+    { value: 'active', label: 'Ativos' },
+    { value: 'blocked', label: 'Bloqueados' },
+  ];
+%>
+
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Governança da plataforma</span>
+    <h1 class="page-title">Administração</h1>
+    <p class="page-subtitle">Aprove contas, bloqueie acessos e acompanhe a base de usuários do ecossistema.</p>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-sky"><i class="bi bi-people"></i></span></div>
+      <strong><%= integer(counts.total) %></strong>
+      <span>Usuários</span>
+      <small><%= integer(counts.florists) %> floriculturas · <%= integer(counts.clients) %> comércios</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-sage"><i class="bi bi-check2-circle"></i></span></div>
+      <strong><%= integer(counts.active) %></strong>
+      <span>Contas ativas</span>
+      <small>Acesso liberado</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-amber"><i class="bi bi-hourglass-split"></i></span></div>
+      <strong><%= integer(counts.pending) %></strong>
+      <span>Em análise</span>
+      <small>Aguardando aprovação</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-danger"><i class="bi bi-slash-circle"></i></span></div>
+      <strong><%= integer(counts.blocked) %></strong>
+      <span>Bloqueadas</span>
+      <small>Acesso suspenso</small>
+    </article>
+  </div>
+</div>
+
+<article class="panel-card mt-3 mt-xl-4">
+  <div class="panel-head">
+    <div>
+      <span class="eyebrow">Usuários</span>
+      <h2>Base cadastrada</h2>
+      <p>Contas pendentes ficam impedidas de entrar até a aprovação.</p>
+    </div>
+    <form class="filter-form" action="/app/admin" method="GET">
+      <div class="input-icon input-icon-sm">
+        <i class="bi bi-search"></i>
+        <input class="form-control form-control-sm" name="q" value="<%= q %>" placeholder="Buscar usuário" aria-label="Buscar usuário" />
+      </div>
+      <select class="form-select form-select-sm" name="status" onchange="this.form.submit()" aria-label="Filtrar por status">
+        <% statusOptions.forEach(function (option) { %>
+          <option value="<%= option.value %>" <%= status === option.value ? 'selected' : '' %>><%= option.label %></option>
+        <% }); %>
+      </select>
+    </form>
+  </div>
+
+  <% if (users.length) { %>
+    <div class="user-list">
+      <% users.forEach(function (user) { %>
+        <% const action = actionFor(user); %>
+        <% const isSelf = user.id === currentUser.id; %>
+        <article class="user-row">
+          <%- include('../../partials/avatar', { name: user.fullName, src: user.avatarUrl, size: 'md' }) %>
+          <div class="user-row-main">
+            <strong><%= user.fullName %><% if (isSelf) { %> <span class="self-tag">você</span><% } %></strong>
+            <span><%= user.organizationName %> · <%= user.city %></span>
+            <small><%= user.email %> · desde <%= date(user.createdAt) %></small>
+          </div>
+          <div class="user-row-side">
+            <span class="role-tag"><%= roleShort(user.role) %></span>
+            <%- include('../../partials/status-badge', { status: user.status }) %>
+          </div>
+          <div class="user-row-actions">
+            <% if (!isSelf && user.role !== 'superadmin') { %>
+              <form action="/app/admin/usuarios/<%= user.id %>/status" method="POST"
+                <%= action.action === 'block' ? 'onsubmit="return confirm(\'Bloquear o acesso deste usuário?\');"' : '' %>>
+                <input type="hidden" name="action" value="<%= action.action %>" />
+                <button class="btn btn-sm <%= action.className %>" type="submit"><i class="bi <%= action.icon %> me-1"></i><%= action.label %></button>
+              </form>
+            <% } else { %>
+              <span class="text-secondary small">—</span>
+            <% } %>
+          </div>
+        </article>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <i class="bi bi-people"></i>
+      <h3>Nenhum usuário encontrado</h3>
+      <p>Ajuste a busca ou o filtro de status.</p>
+    </div>
+  <% } %>
+</article>

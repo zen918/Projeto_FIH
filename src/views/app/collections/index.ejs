@@ -1,0 +1,180 @@
+<%
+  const nextLabels = {
+    solicitada: 'Agendar',
+    agendada: 'Coletar',
+    coletada: 'Processar',
+  };
+  const statusOptions = [
+    { value: '', label: 'Todas' },
+    { value: 'solicitada', label: 'Solicitada' },
+    { value: 'agendada', label: 'Agendada' },
+    { value: 'coletada', label: 'Coletada' },
+    { value: 'processada', label: 'Processada' },
+    { value: 'cancelada', label: 'Cancelada' },
+  ];
+  const canManage = ['superadmin', 'pesquisador_lab'].includes(currentUser.role);
+%>
+
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Logística reversa</span>
+    <h1 class="page-title">Coletas de pétalas</h1>
+    <p class="page-subtitle">
+      <%= isFlorist
+        ? 'Sinalize as pétalas disponíveis e acompanhe cada retirada até o laboratório.'
+        : 'Acompanhe e avance a logística reversa das pétalas de rosas.' %>
+    </p>
+  </div>
+  <% if (currentUser.role === 'floricultura') { %>
+    <a class="btn btn-brand" href="/app/coletas/nova"><i class="bi bi-plus-lg me-1"></i> Registrar coleta</a>
+  <% } %>
+</div>
+
+<div class="row g-3">
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-petal"><i class="bi bi-flower2"></i></span></div>
+      <strong><%= kg(summary.weightKg, 1) %></strong>
+      <span>Biomassa sinalizada</span>
+      <small><%= summary.total %> coletas no total</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-amber"><i class="bi bi-hourglass-split"></i></span></div>
+      <strong><%= integer(summary.pending) %></strong>
+      <span>Aguardando agenda</span>
+      <small>Solicitações recém-criadas</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-sky"><i class="bi bi-truck"></i></span></div>
+      <strong><%= integer(summary.active) %></strong>
+      <span>Em andamento</span>
+      <small>Fora do status processada</small>
+    </article>
+  </div>
+  <div class="col-6 col-xl-3">
+    <article class="metric-card metric-card-sm">
+      <div class="metric-top"><span class="metric-icon tone-sage"><i class="bi bi-recycle"></i></span></div>
+      <strong><%= integer(summary.processed) %></strong>
+      <span>Processadas</span>
+      <small>Biomassa já convertida</small>
+    </article>
+  </div>
+</div>
+
+<article class="panel-card mt-3 mt-xl-4">
+  <div class="panel-head">
+    <div>
+      <span class="eyebrow">Histórico</span>
+      <h2>Suas coletas</h2>
+      <p>Filtre por status e acompanhe a evolução da biomassa.</p>
+    </div>
+    <form class="filter-form" action="/app/coletas" method="GET">
+      <select class="form-select form-select-sm" name="status" onchange="this.form.submit()" aria-label="Filtrar por status">
+        <% statusOptions.forEach(function (option) { %>
+          <option value="<%= option.value %>" <%= status === option.value ? 'selected' : '' %>><%= option.label %></option>
+        <% }); %>
+      </select>
+    </form>
+  </div>
+
+  <% if (collections.length) { %>
+    <div class="table-responsive d-none d-md-block">
+      <table class="table app-table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Coleta</th>
+            <% if (!isFlorist) { %><th>Floricultura</th><% } %>
+            <th>Peso</th>
+            <th>Qualidade</th>
+            <th>Retirada</th>
+            <th>Status</th>
+            <th class="text-end">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% collections.forEach(function (collection) { %>
+            <tr>
+              <td>
+                <strong><%= collection.status === 'processada' ? 'Biomassa processada' : 'Pétalas de rosas' %></strong>
+                <small class="d-block text-secondary"><%= timeAgo(collection.createdAt) %> · <%= collection.address %></small>
+              </td>
+              <% if (!isFlorist) { %>
+                <td>
+                  <%= collection.floristOrganization %>
+                  <small class="d-block text-secondary"><%= collection.floristCity %></small>
+                </td>
+              <% } %>
+              <td><strong><%= kg(collection.weightKg, 1) %></strong></td>
+              <td><span class="quality-pill quality-<%= collection.qualityStatus %>"><%= qualityLabel(collection.qualityStatus) %></span></td>
+              <td><%= date(collection.pickupDate) %></td>
+              <td><%- include('../../partials/status-badge', { status: collection.status }) %></td>
+              <td class="text-end">
+                <div class="d-inline-flex gap-1">
+                  <% if (canManage && nextLabels[collection.status]) { %>
+                    <form action="/app/coletas/<%= collection.id %>/status" method="POST">
+                      <button class="btn btn-sm btn-brand-soft" type="submit"><%= nextLabels[collection.status] %></button>
+                    </form>
+                  <% } %>
+                  <% if (collection.status !== 'processada' && collection.status !== 'cancelada') { %>
+                    <form action="/app/coletas/<%= collection.id %>/status" method="POST" onsubmit="return confirm('Cancelar esta coleta?');">
+                      <input type="hidden" name="action" value="cancel" />
+                      <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-x-lg"></i></button>
+                    </form>
+                  <% } %>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mobile-card-list d-md-none">
+      <% collections.forEach(function (collection) { %>
+        <div class="mobile-card">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+              <strong><%= kg(collection.weightKg, 1) %> de pétalas</strong>
+              <small class="d-block text-secondary"><%= collection.floristOrganization %> · <%= collection.floristCity %></small>
+            </div>
+            <%- include('../../partials/status-badge', { status: collection.status }) %>
+          </div>
+          <div class="mobile-card-meta">
+            <span><i class="bi bi-calendar3"></i> <%= date(collection.pickupDate) %></span>
+            <span class="quality-pill quality-<%= collection.qualityStatus %>"><%= qualityLabel(collection.qualityStatus) %></span>
+          </div>
+          <div class="d-flex gap-2 mt-2">
+            <% if (canManage && nextLabels[collection.status]) { %>
+              <form action="/app/coletas/<%= collection.id %>/status" method="POST" class="flex-grow-1">
+                <button class="btn btn-sm btn-brand-soft w-100" type="submit"><%= nextLabels[collection.status] %></button>
+              </form>
+            <% } %>
+            <% if (collection.status !== 'processada' && collection.status !== 'cancelada') { %>
+              <form action="/app/coletas/<%= collection.id %>/status" method="POST" onsubmit="return confirm('Cancelar esta coleta?');">
+                <input type="hidden" name="action" value="cancel" />
+                <button class="btn btn-sm btn-outline-danger" type="submit"><i class="bi bi-x-lg"></i></button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <i class="bi bi-flower1"></i>
+      <h3>Nenhuma coleta encontrada</h3>
+      <p>
+        <%= isFlorist
+          ? 'Registre a primeira sinalização de pétalas para iniciar o ciclo.'
+          : 'Ajuste o filtro ou aguarde novas solicitações das floriculturas.' %>
+      </p>
+      <% if (currentUser.role === 'floricultura') { %>
+        <a class="btn btn-brand" href="/app/coletas/nova"><i class="bi bi-plus-lg me-1"></i> Registrar coleta</a>
+      <% } %>
+    </div>
+  <% } %>
+</article>

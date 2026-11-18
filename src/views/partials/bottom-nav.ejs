@@ -1,0 +1,38 @@
+<%
+  const byKey = {};
+  navItems.forEach(function (item) { byKey[item.key] = item; });
+  const sequences = {
+    floricultura: ['dashboard', 'collections', 'batches', 'profile'],
+    comercio_cliente: ['dashboard', 'batches', 'orders', 'profile'],
+    pesquisador_lab: ['dashboard', 'collections', 'batches', 'orders'],
+    superadmin: ['dashboard', 'collections', 'batches', 'orders'],
+  };
+  const sequence = sequences[currentUser.role] || ['dashboard', 'collections', 'batches', 'orders'];
+  const items = sequence.map(function (key) { return byKey[key]; }).filter(Boolean);
+  const left = items.slice(0, 2);
+  const right = items.slice(2);
+%>
+<nav class="bottom-nav d-lg-none" aria-label="Navegação principal">
+  <div class="bottom-nav-inner">
+    <% left.forEach(function (item) { %>
+      <a class="bottom-link <%= isActive(item.to) ? 'active' : '' %>" href="<%= item.to %>">
+        <i class="bi <%= item.icon %>"></i>
+        <span><%= item.shortLabel %></span>
+      </a>
+    <% }); %>
+
+    <% if (quickAction) { %>
+      <a class="bottom-fab" href="<%= quickAction.to %>" aria-label="<%= quickAction.label %>">
+        <span><i class="bi bi-plus-lg"></i></span>
+        <small><%= quickAction.label %></small>
+      </a>
+    <% } %>
+
+    <% right.forEach(function (item) { %>
+      <a class="bottom-link <%= isActive(item.to) ? 'active' : '' %>" href="<%= item.to %>">
+        <i class="bi <%= item.icon %>"></i>
+        <span><%= item.shortLabel %></span>
+      </a>
+    <% }); %>
+  </div>
+</nav>

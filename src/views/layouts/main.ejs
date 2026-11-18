@@ -1,0 +1,16 @@
+<%- include('../partials/head') %>
+  <div class="app-shell">
+    <%- include('../partials/sidebar') %>
+    <div class="app-main">
+      <%- include('../partials/topbar') %>
+      <main class="app-content">
+        <%- include('../partials/flash') %>
+        <%- body %>
+      </main>
+    </div>
+  </div>
+  <%- include('../partials/bottom-nav') %>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/app.js"></script>
+</body>
+</html>

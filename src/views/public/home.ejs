@@ -1,0 +1,306 @@
+<section class="hero">
+  <div class="hero-glow hero-glow-petal"></div>
+  <div class="hero-glow hero-glow-sage"></div>
+  <div class="container position-relative">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="hero-badge">
+          <i class="bi bi-stars"></i> Economia circular · Biotecnologia sustentável
+        </span>
+        <h1 class="hero-title mt-4">
+          Da pétala descartada<br />
+          à embalagem que <em>volta para a terra.</em>
+        </h1>
+        <p class="hero-text">
+          O Plastikkimik Pytangy conecta floriculturas, laboratório e comércio B2B em uma
+          cadeia rastreável de bioplástico biodegradável feito de pétalas de rosas.
+        </p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <% if (currentUser) { %>
+            <a class="btn btn-petal btn-lg" href="/app">Abrir meu painel <i class="bi bi-arrow-right ms-1"></i></a>
+          <% } else { %>
+            <a class="btn btn-petal btn-lg" href="/login">Explorar a demonstração <i class="bi bi-arrow-right ms-1"></i></a>
+            <a class="btn btn-outline-light btn-lg" href="/rastreio"><i class="bi bi-qr-code-scan me-1"></i> Rastrear um lote</a>
+          <% } %>
+        </div>
+        <div class="hero-stats row g-3 mt-4">
+          <div class="col-6 col-md-3">
+            <div class="hero-stat">
+              <strong><%= kg(snapshot.global.petalsDivertedKg, 1) %></strong>
+              <span>pétalas desviadas</span>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="hero-stat">
+              <strong><%= kg(snapshot.global.bioplasticProducedKg, 1) %></strong>
+              <span>bioplástico</span>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="hero-stat">
+              <strong><%= integer(snapshot.global.bagsEquivalent) %></strong>
+              <span>sacolas equivalentes</span>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="hero-stat">
+              <strong><%= kg(snapshot.global.co2AvoidedKg, 1) %></strong>
+              <span>CO₂ evitado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="hero-card">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="card-kicker">Demonstração guiada</span>
+            <span class="demo-chip">MVP</span>
+          </div>
+          <h2 class="h4 fw-bold mb-1">Quatro perfis, um só ciclo.</h2>
+          <p class="text-secondary small mb-4">
+            Entre com um clique e percorra a cadeia da pétala à embalagem.
+            Senha de todas as contas: <code><%= demoPassword %></code>.
+          </p>
+
+          <% if (!currentUser) { %>
+            <div class="demo-list">
+              <% demoAccounts.forEach(function (account, index) { %>
+                <form action="/demo-login" method="POST">
+                  <input type="hidden" name="email" value="<%= account.email %>" />
+                  <button class="demo-account" type="submit">
+                    <span class="demo-icon demo-icon-<%= index %>">
+                      <i class="bi <%= index === 0 ? 'bi-shield-check' : index === 1 ? 'bi-flower1' : index === 2 ? 'bi-eyedropper' : 'bi-box-seam' %>"></i>
+                    </span>
+                    <span class="min-w-0 text-start">
+                      <strong><%= account.label %></strong>
+                      <small><%= account.email %></small>
+                    </span>
+                    <i class="bi bi-arrow-up-right ms-auto"></i>
+                  </button>
+                </form>
+              <% }); %>
+            </div>
+            <a class="btn btn-outline-secondary w-100 mt-3" href="/login">
+              Entrar com e-mail e senha
+            </a>
+          <% } else { %>
+            <div class="d-grid gap-2">
+              <a class="btn btn-brand" href="/app"><i class="bi bi-grid-1x2 me-2"></i>Visão geral</a>
+              <a class="btn btn-outline-secondary" href="/app/perfil"><i class="bi bi-person-circle me-2"></i>Meu perfil</a>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="trust-strip">
+  <div class="container">
+    <div class="trust-items">
+      <span><i class="bi bi-patch-check"></i> Rastreabilidade por QR Code</span>
+      <span><i class="bi bi-arrow-repeat"></i> Logística reversa</span>
+      <span><i class="bi bi-graph-up-arrow"></i> Impacto em tempo real</span>
+      <span><i class="bi bi-people"></i> RBAC por perfil</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="como-funciona">
+  <div class="container">
+    <div class="section-heading text-center mx-auto">
+      <span class="eyebrow">Como funciona</span>
+      <h2>Um ciclo fechado, rastreável de ponta a ponta.</h2>
+      <p>Da sinalização da coleta ao selo digital do comércio, cada etapa vira dado verificável.</p>
+    </div>
+
+    <div class="row g-4 mt-2">
+      <div class="col-md-6 col-xl-3">
+        <article class="step-card h-100">
+          <span class="step-number">01</span>
+          <span class="step-icon"><i class="bi bi-flower1"></i></span>
+          <h3>Coleta inteligente</h3>
+          <p>A floricultura sinaliza pétalas, qualidade e data limite de retirada para evitar perdas.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <article class="step-card h-100">
+          <span class="step-number">02</span>
+          <span class="step-icon"><i class="bi bi-eyedropper"></i></span>
+          <h3>Formulação no laboratório</h3>
+          <p>O SENAI vincula cada lote à coleta, registra a fórmula e os parâmetros de biodegradação.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <article class="step-card h-100">
+          <span class="step-number">03</span>
+          <span class="step-icon"><i class="bi bi-qr-code"></i></span>
+          <h3>QR Code da pétala à embalagem</h3>
+          <p>Cada lote ganha um código público com origem, impacto e evidências de qualidade.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-xl-3">
+        <article class="step-card h-100">
+          <span class="step-number">04</span>
+          <span class="step-icon"><i class="bi bi-bag-check"></i></span>
+          <h3>Pedido B2B com selo verde</h3>
+          <p>O comércio compra bioplástico rastreado e comprova o impacto no seu selo digital.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft" id="perfis">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5">
+        <span class="eyebrow">Perfis de acesso</span>
+        <h2 class="section-title">Cada elo da cadeia tem o painel que precisa.</h2>
+        <p class="text-secondary">
+          O sistema aplica RBAC de verdade: cada perfil vê e altera apenas o que faz sentido
+          para a sua operação.
+        </p>
+        <div class="impact-list mt-4">
+          <div><i class="bi bi-shield-check"></i><span><strong>SuperAdmin</strong> aprova contas, audita a operação e acompanha métricas globais.</span></div>
+          <div><i class="bi bi-flower1"></i><span><strong>Floricultura</strong> registra coletas e acompanha o impacto do seu descarte.</span></div>
+          <div><i class="bi bi-eyedropper"></i><span><strong>Laboratório</strong> cria lotes, formulas e QR Codes rastreáveis.</span></div>
+          <div><i class="bi bi-box-seam"></i><span><strong>Comércio B2B</strong> compra bioplástico e emite seu selo de sustentabilidade.</span></div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="profile-card profile-card-admin">
+              <i class="bi bi-shield-check"></i>
+              <h3>SuperAdmin</h3>
+              <p>Governança, aprovação de contas e auditoria de lotes.</p>
+              <span class="mini-tag">visão 360°</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="profile-card profile-card-flower">
+              <i class="bi bi-flower1"></i>
+              <h3>Floricultura</h3>
+              <p>Coletas sinalizadas antes da degradação das pétalas.</p>
+              <span class="mini-tag">impacto local</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="profile-card profile-card-lab">
+              <i class="bi bi-eyedropper"></i>
+              <h3>Laboratório</h3>
+              <p>Lotes, fórmulas, resistência e tempo de biodegradação.</p>
+              <span class="mini-tag">ciência aplicada</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="profile-card profile-card-client">
+              <i class="bi bi-box-seam"></i>
+              <h3>Comércio B2B</h3>
+              <p>Catálogo, pedidos e selo digital de sustentabilidade.</p>
+              <span class="mini-tag">compra responsável</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="impact-band" id="impacto">
+  <div class="container">
+    <div class="row g-4 align-items-end">
+      <div class="col-lg-5">
+        <span class="eyebrow eyebrow-light">Impacto acumulado</span>
+        <h2 class="section-title text-white">Números que saem do discurso e viram prova.</h2>
+        <p class="text-white-50 mb-0">
+          Conversões calculadas a partir dos fatores do MVP: 0,3 kg de bioplástico por kg de
+          pétalas, 1 kg de plástico fóssil evitado por kg de bioplástico e 3,2 kg de CO₂ evitado.
+        </p>
+      </div>
+      <div class="col-lg-7">
+        <div class="row g-3">
+          <div class="col-6 col-lg-3">
+            <div class="impact-tile"><i class="bi bi-flower2"></i><strong><%= kg(snapshot.global.petalsDivertedKg, 1) %></strong><span>pétalas desviadas de aterros</span></div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="impact-tile"><i class="bi bi-recycle"></i><strong><%= kg(snapshot.global.fossilPlasticAvoidedKg, 1) %></strong><span>plástico fóssil evitado</span></div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="impact-tile"><i class="bi bi-cloud-sun"></i><strong><%= kg(snapshot.global.co2AvoidedKg, 1) %></strong><span>CO₂ evitado</span></div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="impact-tile"><i class="bi bi-bag"></i><strong><%= integer(snapshot.global.bagsEquivalent) %></strong><span>sacolas substituídas</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <span class="eyebrow">Rastreabilidade pública</span>
+        <h2 class="section-title">Escaneie. Veja a história. Comprove o impacto.</h2>
+        <p class="text-secondary">
+          Qualquer pessoa pode consultar um lote pelo QR Code ou pelo código de rastreio.
+          A página pública mostra a floricultura de origem, a fórmula, a data e os fatores ambientais.
+        </p>
+        <form class="trace-form" action="/rastreio" method="GET">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-qr-code-scan"></i></span>
+            <input class="form-control" name="code" placeholder="Ex.: <%= examples[0] ? examples[0].traceCode : 'PYTA1B2' %>" aria-label="Código de rastreio" />
+            <button class="btn btn-brand" type="submit">Rastrear</button>
+          </div>
+        </form>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <% examples.forEach(function (batch) { %>
+            <a class="trace-chip" href="/r/<%= batch.traceCode %>"><i class="bi bi-qr-code"></i> <%= batch.traceCode %></a>
+          <% }); %>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="trace-preview">
+          <div class="trace-preview-top">
+            <span class="verified-pill"><i class="bi bi-patch-check-fill"></i> Rastreabilidade verificada</span>
+            <span class="trace-code"><%= examples[0] ? examples[0].traceCode : 'PYTA1B2' %></span>
+          </div>
+          <h3>Uma embalagem com história rastreável.</h3>
+          <p>
+            <%= examples[0] ? examples[0].formulaVersion : 'V3 - Blend flexível' %> ·
+            pétalas de <%= examples[0] ? examples[0].floristCity : 'Jaú/SP' %> ·
+            lote <%= examples[0] ? examples[0].batchCode : 'LOTE-260301-A1B2' %>.
+          </p>
+          <div class="trace-mini-stats">
+            <div><strong><%= examples[0] ? kg(examples[0].petalsKg, 1) : '18 kg' %></strong><span>pétalas</span></div>
+            <div><strong><%= examples[0] ? kg(examples[0].weightProducedKg, 1) : '5,2 kg' %></strong><span>bioplástico</span></div>
+            <div><strong><%= examples[0] ? examples[0].biodegradationDays : 35 %> dias</strong><span>biodegradação</span></div>
+          </div>
+          <% if (examples[0]) { %>
+            <a class="btn btn-outline-light btn-sm mt-3" href="/r/<%= examples[0].traceCode %>">Ver página pública <i class="bi bi-arrow-up-right ms-1"></i></a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-card">
+      <div>
+        <span class="eyebrow">Pronto para ver o ciclo girar?</span>
+        <h2 class="mb-2">Entre na demonstração e percorra a cadeia completa.</h2>
+        <p class="mb-0">Sem configuração de banco, sem serviços externos: os dados de demonstração já estão prontos.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-3">
+        <a class="btn btn-petal btn-lg" href="/login">Entrar agora <i class="bi bi-arrow-right ms-1"></i></a>
+        <a class="btn btn-outline-light btn-lg" href="/cadastro">Criar conta</a>
+      </div>
+    </div>
+  </div>
+</section>

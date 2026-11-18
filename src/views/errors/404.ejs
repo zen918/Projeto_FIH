@@ -1,0 +1,16 @@
+<section class="error-page">
+  <div class="error-card">
+    <span class="error-code">404</span>
+    <span class="error-icon"><i class="bi bi-signpost-split"></i></span>
+    <h1>Página não encontrada</h1>
+    <p>O endereço acessado não existe ou foi movido. Volte para o início e continue o ciclo.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+      <% if (currentUser) { %>
+        <a class="btn btn-brand" href="/app"><i class="bi bi-grid-1x2 me-1"></i> Ir para meu painel</a>
+      <% } else { %>
+        <a class="btn btn-brand" href="/"><i class="bi bi-house me-1"></i> Voltar ao início</a>
+      <% } %>
+      <a class="btn btn-outline-secondary" href="/rastreio"><i class="bi bi-qr-code-scan me-1"></i> Rastrear lote</a>
+    </div>
+  </div>
+</section>

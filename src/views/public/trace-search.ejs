@@ -1,0 +1,29 @@
+<section class="trace-search-page">
+  <div class="container">
+    <div class="trace-search-card">
+      <span class="verified-pill"><i class="bi bi-upc-scan"></i> Consulta pública</span>
+      <h1 class="trace-title">Rastrear um lote</h1>
+      <p class="trace-subtitle">
+        Digite o código impresso na embalagem ou escaneie o QR Code. Cada lote mostra a origem,
+        a fórmula e o impacto ambiental.
+      </p>
+
+      <form class="trace-form mx-auto" action="/rastreio" method="GET">
+        <div class="input-group input-group-lg">
+          <span class="input-group-text"><i class="bi bi-qr-code-scan"></i></span>
+          <input class="form-control" name="code" value="<%= code %>" placeholder="Ex.: PYTA1B2" aria-label="Código de rastreio" required />
+          <button class="btn btn-brand" type="submit">Rastrear</button>
+        </div>
+      </form>
+
+      <div class="trace-examples">
+        <span class="text-secondary small">Exemplos para testar:</span>
+        <div class="d-flex flex-wrap gap-2">
+          <% examples.forEach(function (batch) { %>
+            <a class="trace-chip" href="/r/<%= batch.traceCode %>"><i class="bi bi-qr-code"></i> <%= batch.traceCode %></a>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

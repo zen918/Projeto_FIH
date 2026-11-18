@@ -1,0 +1,118 @@
+<%
+  const impact = snapshot.personal;
+  const deliveredKg = delivered.reduce(function (total, order) { return total + order.quantityKg; }, 0);
+%>
+
+<div class="page-head">
+  <div>
+    <span class="eyebrow">Sustentabilidade comprovável</span>
+    <h1 class="page-title">Meu selo verde</h1>
+    <p class="page-subtitle">Comprove o impacto do bioplástico rastreado na sua operação B2B.</p>
+  </div>
+  <button class="btn btn-outline-secondary" type="button" onclick="window.print()"><i class="bi bi-printer me-1"></i> Imprimir selo</button>
+</div>
+
+<div class="row g-3 g-xl-4">
+  <div class="col-lg-7">
+    <article class="seal-paper" id="selo">
+      <div class="seal-paper-head">
+        <span class="brand brand-dark">
+          <span class="brand-mark"><i class="bi bi-flower1"></i></span>
+          <span class="brand-text"><strong>Plastikkimik</strong><small>PYTANGY</small></span>
+        </span>
+        <span class="verified-pill"><i class="bi bi-patch-check-fill"></i> Selo verificado</span>
+      </div>
+
+      <div class="seal-medal">
+        <span class="seal-medal-leaf"><i class="bi bi-flower1"></i></span>
+        <strong>Selo Verde</strong>
+        <small>Comércio B2B rastreado</small>
+      </div>
+
+      <h2 class="seal-org"><%= currentUser.organizationName %></h2>
+      <p class="seal-org-meta"><%= currentUser.city %> · <%= currentUser.fullName %></p>
+
+      <div class="seal-metrics">
+        <div><strong><%= kg(impact.bioplasticProducedKg, 1) %></strong><span>bioplástico adquirido</span></div>
+        <div><strong><%= kg(impact.petalsDivertedKg, 1) %></strong><span>pétalas equivalentes</span></div>
+        <div><strong><%= kg(impact.co2AvoidedKg, 1) %></strong><span>CO₂ evitado</span></div>
+        <div><strong><%= integer(impact.bagsEquivalent) %></strong><span>sacolas substituídas</span></div>
+      </div>
+
+      <div class="seal-foot">
+        <div>
+          <span class="seal-foot-label">Último lote entregue</span>
+          <strong><%= highlight ? highlight.batchCode : 'Nenhuma entrega registrada' %></strong>
+          <% if (highlight) { %>
+            <small>Código público <code><%= highlight.traceCode %></code></small>
+          <% } %>
+        </div>
+        <div class="seal-sign">
+          <span class="seal-sign-line"></span>
+          <small>Equipe FIH · INTEGRA SENAI 2026</small>
+        </div>
+      </div>
+    </article>
+
+    <div class="info-note mt-3">
+      <i class="bi bi-info-circle"></i>
+      <span>O selo usa os fatores oficiais do MVP: 0,3 kg de bioplástico por kg de pétalas e 3,2 kg de CO₂ evitado por kg de bioplástico.</span>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <article class="panel-card qr-card">
+      <div class="d-flex align-items-center justify-content-between">
+        <span class="eyebrow">Comprovação pública</span>
+        <i class="bi bi-qr-code fs-5 text-secondary"></i>
+      </div>
+      <% if (qrDataUrl && highlight) { %>
+        <div class="qr-frame">
+          <img src="<%= qrDataUrl %>" alt="QR Code do lote <%= highlight.traceCode %>" width="220" height="220" />
+        </div>
+        <p class="qr-code-text">Escaneie e veja a origem</p>
+        <p class="text-secondary small text-center">Página pública do lote <strong><%= highlight.batchCode %></strong> com origem, fórmula e impacto.</p>
+        <div class="d-grid gap-2">
+          <a class="btn btn-brand" href="/r/<%= highlight.traceCode %>" target="_blank" rel="noreferrer"><i class="bi bi-box-arrow-up-right me-1"></i> Ver página pública</a>
+          <a class="btn btn-outline-secondary" href="/r/<%= highlight.traceCode %>/qr.png?download=1"><i class="bi bi-download me-1"></i> Baixar QR PNG</a>
+        </div>
+      <% } else { %>
+        <div class="empty-state py-4">
+          <i class="bi bi-qr-code"></i>
+          <h3>QR Code indisponível</h3>
+          <p>O selo ganha QR Code quando houver um pedido vinculado a um lote.</p>
+        </div>
+      <% } %>
+    </article>
+
+    <article class="panel-card mt-3 mt-xl-4">
+      <div class="panel-head compact">
+        <div>
+          <span class="eyebrow">Compras</span>
+          <h2>Pedidos entregues</h2>
+        </div>
+        <span class="count-bubble"><%= delivered.length %></span>
+      </div>
+      <% if (delivered.length) { %>
+        <div class="compact-list">
+          <% delivered.slice(0, 4).forEach(function (order) { %>
+            <div class="compact-row">
+              <span class="compact-icon tone-sage"><i class="bi bi-box-seam"></i></span>
+              <div class="min-w-0 flex-grow-1">
+                <strong class="text-truncate d-block"><%= order.batchCode %></strong>
+                <small class="text-truncate d-block"><%= kg(order.quantityKg, 1) %> · <%= packagingLabel(order.packagingType) %></small>
+              </div>
+              <a class="icon-link" href="/r/<%= order.traceCode %>" target="_blank" rel="noreferrer" aria-label="Rastrear"><i class="bi bi-upc-scan"></i></a>
+            </div>
+          <% }); %>
+        </div>
+        <div class="seal-total mt-3">
+          <span>Volume entregue</span>
+          <strong><%= kg(deliveredKg, 1) %></strong>
+        </div>
+      <% } else { %>
+        <div class="empty-inline"><i class="bi bi-bag"></i> Nenhum pedido entregue ainda.</div>
+      <% } %>
+    </article>
+  </div>
+</div>

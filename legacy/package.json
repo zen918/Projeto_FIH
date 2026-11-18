@@ -1,0 +1,24 @@
+{
+  "name": "plastikkimik-pytangy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ecossistema digital Plastikkimik Pytangy - economia circular e bioplástico de pétalas de rosas (Equipe FIH - INTEGRA SENAI 2026)",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c magenta,green \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "dev:api": "npm run dev -w backend",
+    "dev:web": "npm run dev -w frontend",
+    "build": "npm run build -w backend && npm run build -w frontend",
+    "start": "npm run start -w backend",
+    "typecheck": "npm run typecheck -w backend && npm run typecheck -w frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

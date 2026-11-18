@@ -1,0 +1,15 @@
+<section class="error-page">
+  <div class="error-card">
+    <span class="error-code">500</span>
+    <span class="error-icon"><i class="bi bi-exclamation-octagon"></i></span>
+    <h1>Algo saiu do ciclo</h1>
+    <p>Tivemos um erro inesperado ao processar esta página. Tente novamente em instantes.</p>
+    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+      <% if (currentUser) { %>
+        <a class="btn btn-brand" href="/app"><i class="bi bi-arrow-clockwise me-1"></i> Voltar ao painel</a>
+      <% } else { %>
+        <a class="btn btn-brand" href="/"><i class="bi bi-house me-1"></i> Voltar ao início</a>
+      <% } %>
+    </div>
+  </div>
+</section>

@@ -5,6 +5,13 @@
       "includeFiles": "{src/views/**,src/public/**,database/**,node_modules/sql.js/dist/sql-wasm.wasm}"
     }
   },
+  "redirects": [
+    {
+      "source": "/app",
+      "destination": "/app/",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
